@@ -12,6 +12,7 @@ var db *sql.DB
 
 func init() {
 	CreateConnection()
+	CreateTables()
 }
 
 //CreateConnection method
@@ -21,7 +22,7 @@ func CreateConnection() {
 		return
 	}
 
-	if connection, err := sql.Open("sqlite3", "../banco.db"); err != nil {
+	if connection, err := sql.Open("sqlite3", "./banco.db"); err != nil {
 		panic(err)
 	} else {
 		db = connection
@@ -31,18 +32,24 @@ func CreateConnection() {
 //CreateTables method
 func CreateTables() {
 	createTable("cuentas", cuentaSchemeSQLITE)
+	createTable("usuarios", usuarioSchemeSQLITE)
+	createTable("tipos_cuenta", tipoCuentaSchemeSQLITE)
 }
 
-func createTable(tableName, scheme string) {
+/*func createTable(tableName, scheme string) {
 	if !existsTable(tableName) {
 		Exec(scheme)
 	} else {
 		truncateTable(tableName)
 	}
+}*/
+
+func createTable(tableName, scheme string) {
+	Exec(scheme)	
 }
 
 func truncateTable(tableName string) {
-	sql := fmt.Sprintf("TRUNCATE %s", tableName)
+	sql := fmt.Sprintf("DELETE FROM %s", tableName)
 	Exec(sql)
 }
 
@@ -55,7 +62,10 @@ func existsTable(tableName string) bool {
 //Exec method
 func Exec(query string, args ...interface{}) (sql.Result, error) {
 	result, err := db.Exec(query, args...)
-	if err != nil && !debug {
+	/*if err != nil && !debug {
+		log.Println(err)
+	}*/
+	if err != nil {
 		log.Println(err)
 	}
 	return result, err
@@ -64,7 +74,10 @@ func Exec(query string, args ...interface{}) (sql.Result, error) {
 //Query method
 func Query(query string, args ...interface{}) (*sql.Rows, error) {
 	rows, err := db.Query(query, args...)
-	if err != nil && !debug {
+	/*if err != nil && !debug {
+		log.Println(err)
+	}*/
+	if err != nil{
 		log.Println(err)
 	}
 	return rows, err
