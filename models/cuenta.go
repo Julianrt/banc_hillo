@@ -3,12 +3,12 @@ package models
 import "errors"
 
 type Cuenta struct {
-	ID 				int 		`json:"id"`
-	NumeroDeCuenta 	int 		`json:"numero_de_cuenta"`
-	Nip 			int 		`json:"nip"`
-	Saldo 			float32 	`json:"saldo"`
-	Titular 		string 		`json:"titular"`
-	IDTipoDeCuenta 	int 		`json:"id_tipo_de_cuenta"`
+	ID                 int     `json:"id"`
+	NumeroDeCuenta     int     `json:"numero_de_cuenta"`
+	Nip                int     `json:"nip"`
+	Saldo              float32 `json:"saldo"`
+	Titular            string  `json:"titular"`
+	IDTipoDeCuenta     int     `json:"id_tipo_de_cuenta"`
 }
 
 var cuentaSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS cuentas(
@@ -22,11 +22,11 @@ var cuentaSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS cuentas(
 
 func nuevaCuenta(numeroDeCuenta, nip int, titular string, idTipoDeCuenta int) *Cuenta {
 	cuenta := &Cuenta {
-		NumeroDeCuenta: numeroDeCuenta,
-		Nip: 			nip,
-		Saldo:			0.0,
-		Titular:		titular,
-		IDTipoDeCuenta:	idTipoDeCuenta,
+		NumeroDeCuenta:   numeroDeCuenta,
+		Nip:              nip,
+		Saldo:            0.0,
+		Titular:          titular,
+		IDTipoDeCuenta:   idTipoDeCuenta,
 	}
 	return cuenta
 }

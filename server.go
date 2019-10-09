@@ -7,9 +7,9 @@ import (
 
 func main () {
 	
-	cuenta, _ := models.AltaCuenta(9696, 1234, "Julian Ruis", 1)
+	cuenta, _ := models.AltaCuenta(9696, 1234, "Fulanito", 1)
 
-	usuario, _ := models.CrearUsuario("Julian Ruiz", "julianrt", "Carritos1")
+	usuario, _ := models.CrearUsuario("Mangano", "Manganito", "123")
 
 	fmt.Println(cuenta)
 	fmt.Println(usuario)
