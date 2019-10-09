@@ -4,10 +4,10 @@ import "errors"
 
 type Cuenta struct {
 	ID 				int 		`json:"id"`
-	NumeroDeCuenta	int 		`json:"numero_de_cuenta"`
-	Nip				int 		`json:"nip"`
-	Saldo			float32		`json:"saldo"`
-	Titular			string 		`json:"titular"`
+	NumeroDeCuenta 	int 		`json:"numero_de_cuenta"`
+	Nip 			int 		`json:"nip"`
+	Saldo 			float32 	`json:"saldo"`
+	Titular 		string 		`json:"titular"`
 	IDTipoDeCuenta 	int 		`json:"id_tipo_de_cuenta"`
 }
 
@@ -68,10 +68,10 @@ func (cuenta *Cuenta) Transferir(numeroCuentaDestino int, monto float32) error {
 	cuentaDestino := nuevaCuenta(0,0,"",0)
 	err := errors.New("")
 
-	if err = cuenta.Retirar(monto); err != nil {
+	if cuentaDestino, err = GetCuentaByNumeroCuenta(numeroCuentaDestino); err != nil {
 		return err
 	}
-	if cuentaDestino, err = GetCuentaByNumeroCuenta(numeroCuentaDestino); err != nil {
+	if err = cuenta.Retirar(monto); err != nil {
 		return err
 	}
 	err = cuentaDestino.Depositar(monto)
@@ -101,7 +101,8 @@ func (cuenta *Cuenta) Guardar() error {
 
 func (cuenta *Cuenta) registrar() error {
 	query := "INSERT INTO cuentas(numero_de_cuenta, nip, saldo, titular, id_tipo_de_cuenta) VALUES(?,?,?,?,?);"
-	_, err := Exec(query, cuenta.NumeroDeCuenta, cuenta.Nip, cuenta.Saldo, cuenta.Titular, cuenta.IDTipoDeCuenta)
+	cuentaID, err := InsertData(query, cuenta.NumeroDeCuenta, cuenta.Nip, cuenta.Saldo, cuenta.Titular, cuenta.IDTipoDeCuenta)
+	cuenta.ID = int(cuentaID)
 	return err
 }
 

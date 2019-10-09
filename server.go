@@ -7,20 +7,12 @@ import (
 
 func main () {
 	
-	cuenta1, err := models.GetCuentaByNumeroCuenta(1234)
-	checkError(err)
-	fmt.Println(cuenta1)
+	cuenta, _ := models.AltaCuenta(9696, 1234, "Julian Ruis", 1)
 
-	cuenta2, err := models.GetCuentaByNumeroCuenta(4444)
-	checkError(err)
-	fmt.Println(cuenta2)
+	usuario, _ := models.CrearUsuario("Julian Ruiz", "julianrt", "Carritos1")
 
-	/*err = cuenta1.Transferir(cuenta2.NumeroDeCuenta, 56.4)
-	checkError(err)
-
-	fmt.Println(cuenta1)
-*/
-	fmt.Println(cuenta1.SolicitarSaldo())
+	fmt.Println(cuenta)
+	fmt.Println(usuario)
 
 }
 
