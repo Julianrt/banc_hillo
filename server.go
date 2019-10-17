@@ -7,12 +7,19 @@ import (
 
 func main () {
 	
-	cuenta, _ := models.AltaCuenta(9696, 1234, "Fulanito", 1)
+	cuenta, _ := models.CrearEmpleado("jkl","jkl", "jkl", "jkl","123")
+	models.CrearEmpleado("asd","asd", "asd", "asd","123")
+	models.CrearEmpleado("asd","asd", "asd", "asdd","123")
 
-	usuario, _ := models.CrearUsuario("Mangano", "Manganito", "123")
+	empleado, _ := models.GetEmpleadoByID(cuenta.ID)
 
-	fmt.Println(cuenta)
-	fmt.Println(usuario)
+	//fmt.Println(empleado)
+
+	empleado.SetPassword("321")
+
+	//fmt.Println(empleado)
+
+	fmt.Println(models.GetEmpleados())
 
 }
 
