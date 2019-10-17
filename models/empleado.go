@@ -54,19 +54,19 @@ func GetEmpleado(sql string, condicion interface{}) (*Empleado, error) {
 }
 
 func GetEmpleadoByID(id int) (*Empleado, error) {
-	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE id=?"
+	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND id=?"
 	return GetEmpleado(sql, id)
 }
 
 func GetEmpleadoByUsername(username string) (*Empleado, error) {
-	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE username=?"
+	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND username=?"
 	return GetEmpleado(sql, username)
 }
 
 //GetUsuarios function
 func GetEmpleados() Empleados {
 	var empleados Empleados
-	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados"
+	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1"
 	rows, _ := Query(sql)
 	for rows.Next() {
 		var empleado Empleado
@@ -113,6 +113,12 @@ func (empleado *Empleado) Delete() error {
 	sql := "DELETE FROM empleados WHERE id=?"
 	_, err := Exec(sql, empleado.ID)
 	return err
+}
+
+func (empleado *Empleado) LogicDelete() error {
+    sql := "UPDATE empleados SET habilitado=0 WHERE id=?"
+    _, err := Exec(sql, empleado.ID)
+    return err
 }
 
 func (empleado *Empleado) SetPassword(password string) {
