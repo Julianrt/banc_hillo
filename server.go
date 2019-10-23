@@ -19,7 +19,7 @@ func main () {
 
 	//fmt.Println(empleado)
 
-	cuenta2.LogicDelete()
+	cuenta2.EliminarLog()
 
 	fmt.Println(models.GetEmpleados())
 	fmt.Println(models.GetEmpleadoByUsername("asd"))

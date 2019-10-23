@@ -31,9 +31,10 @@ func CreateConnection() {
 
 //CreateTables method
 func CreateTables() {
-	createTable("cuentas", cuentaSchemeSQLITE)
-	createTable("empleados", empleadosSchemeSQLITE)
+	createTable("clientes", clienteSchemeSQLITE)
 	createTable("tipos_cuenta", tipoCuentaSchemeSQLITE)
+	createTable("empleados", empleadosSchemeSQLITE)
+	createTable("cuentas", cuentaSchemeSQLITE)
 }
 
 /*func createTable(tableName, scheme string) {

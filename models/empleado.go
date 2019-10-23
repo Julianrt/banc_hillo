@@ -1,12 +1,12 @@
 package models
 
 type Empleado struct {
-	ID                 int       `json:"id"`
-	Nombre             string    `json:"nombre"`
-	ApellidoPaterno    string    `json:"apellido_paterno"`
+    ID                 int       `json:"id"`
+    Nombre             string    `json:"nombre"`
+    ApellidoPaterno    string    `json:"apellido_paterno"`
     ApellidoMaterno    string    `json:"apellido_materno"` 
-	Username           string    `json:"username"`
-	Password           string    `json:"password"`
+    Username           string    `json:"username"`
+    Password           string    `json:"password"`
     habilitado         int
     fechaCreacion      string
 }
@@ -63,7 +63,6 @@ func GetEmpleadoByUsername(username string) (*Empleado, error) {
 	return GetEmpleado(sql, username)
 }
 
-//GetUsuarios function
 func GetEmpleados() Empleados {
 	var empleados Empleados
 	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1"
@@ -85,15 +84,14 @@ func GetEmpleados() Empleados {
 	return empleado, nil
 }*/
 
-//Save method
 func (empleado *Empleado) Save() error {
 	if empleado.ID == 0 {
-		return empleado.insert()
+		return empleado.registrar()
 	}
-	return empleado.update()
+	return empleado.actualizar()
 }
 
-func (empleado *Empleado) insert() error {
+func (empleado *Empleado) registrar() error {
 	sql := "INSERT INTO empleados(nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?,?);"
 	empleadoID, err := InsertData(sql, empleado.Nombre, empleado.ApellidoPaterno, empleado.ApellidoMaterno, 
         empleado.Username, empleado.Password, empleado.habilitado, empleado.fechaCreacion)
@@ -101,24 +99,22 @@ func (empleado *Empleado) insert() error {
 	return err
 }
 
-func (empleado *Empleado) update() error {
+func (empleado *Empleado) actualizar() error {
 	sql := "UPDATE empleados SET nombre=?, apellido_paterno=?, apellido_materno=?, username=?, password=?, habilitado=? WHERE id=?"
 	_, err := Exec(sql, empleado.Nombre, empleado.ApellidoPaterno, empleado.ApellidoMaterno, empleado.Username, empleado.Password, 
         empleado.habilitado, empleado.ID)
 	return err
 }
 
-//Delete method
-func (empleado *Empleado) Delete() error {
+func (empleado *Empleado) EliminarLog() error {
+    empleado.habilitado=0
+    return empleado.actualizar()
+}
+
+func (empleado *Empleado) Eliminar() error {
 	sql := "DELETE FROM empleados WHERE id=?"
 	_, err := Exec(sql, empleado.ID)
 	return err
-}
-
-func (empleado *Empleado) LogicDelete() error {
-    sql := "UPDATE empleados SET habilitado=0 WHERE id=?"
-    _, err := Exec(sql, empleado.ID)
-    return err
 }
 
 func (empleado *Empleado) SetPassword(password string) {
