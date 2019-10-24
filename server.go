@@ -7,23 +7,19 @@ import (
 
 func main () {
 	
-	cuenta,_ := models.CrearEmpleado("jkl","jkl", "jkl", "jkl","123")
-	models.CrearEmpleado("asd","asd", "asd", "asd","123")
-	cuenta2,_ := models.CrearEmpleado("asd","asd", "asd", "asdd","123")
+	cliente, _ := models.CrearCliente("Julián","Ruiz","Tequida", "RUTJ960918HSRZQL01")
 
-	empleado, _ := models.GetEmpleadoByID(cuenta.ID)
+	nuevaCuenta,_ := models.AltaCuenta("0000",cliente.ID,1)
 
-	//fmt.Println(empleado)
+	fmt.Println(nuevaCuenta)
+	
+	nuevaCuenta.Depositar(6000.50)
+	nuevaCuenta.Depositar(9500.00)
 
-	empleado.SetPassword("321")
+	fmt.Println("+++++++++++++")
+	fmt.Println(cliente)
+	fmt.Println(nuevaCuenta)
 
-	//fmt.Println(empleado)
-
-	cuenta2.EliminarLog()
-
-	fmt.Println(models.GetEmpleados())
-	fmt.Println(models.GetEmpleadoByUsername("asd"))
-	fmt.Println(models.GetEmpleadoByUsername("asdd"))
 
 }
 

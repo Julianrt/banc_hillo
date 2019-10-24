@@ -1,10 +1,13 @@
 package models
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 type Cuenta struct {
     ID                 int     `json:"id"`
-    NumeroDeCuenta     int     `json:"numero_de_cuenta"`
+    NumeroDeCuenta     string  `json:"numero_de_cuenta"`
     Saldo              float32 `json:"saldo"`
     IDCliente          int      `json:"id_cliente"`
     IDTipoDeCuenta     int     `json:"id_tipo_de_cuenta"`
@@ -14,15 +17,15 @@ type Cuenta struct {
 
 var cuentaSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS cuentas(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    numero_de_cuenta INTEGER NOT NULL UNIQUE,
+    numero_de_cuenta TEXT NOT NULL UNIQUE,
     saldo REAL DEFAULT 0.0,
     id_cliente TEXT,
-    id_tipo_de_cuenta INTEGER
+    id_tipo_de_cuenta INTEGER,
     habilitado INTEGER DEFAULT 0,
     fecha_creacion TEXT);`
 
 
-func nuevaCuenta(numeroDeCuenta, idCliente, idTipoDeCuenta int) *Cuenta {
+func nuevaCuenta(numeroDeCuenta string, idCliente, idTipoDeCuenta int) *Cuenta {
     cuenta := &Cuenta {
         NumeroDeCuenta: numeroDeCuenta,
         Saldo:          0.0,
@@ -34,7 +37,7 @@ func nuevaCuenta(numeroDeCuenta, idCliente, idTipoDeCuenta int) *Cuenta {
     return cuenta
 }
 
-func AltaCuenta(numeroDeCuenta, idCliente, idTipoDeCuenta int) (*Cuenta, error) {
+func AltaCuenta(numeroDeCuenta string, idCliente, idTipoDeCuenta int) (*Cuenta, error) {
     cuenta := nuevaCuenta(numeroDeCuenta, idCliente, idTipoDeCuenta )
     err := cuenta.Guardar()
     return cuenta, err
@@ -55,8 +58,12 @@ func GetCuentaByNumeroCuenta(numeroDeCuenta int) (*Cuenta, error) {
 }
 
 func (cuenta *Cuenta) Depositar(monto float32) error {
-	cuenta.Saldo = monto
-	return cuenta.Guardar()
+	cuenta.Saldo += monto
+	err := cuenta.Guardar()
+	if err == nil {
+		cuenta.activarCuenta()
+	}
+	return err
 }
 
 func (cuenta *Cuenta) Retirar(monto float32) error {
@@ -117,3 +124,25 @@ func (cuenta *Cuenta) actualizar() error {
         cuenta.NumeroDeCuenta)
 	return err
 }
+
+func (cuenta *Cuenta) estaActivada() bool {	
+	if cuenta.habilitado == 1 {
+		return true
+	}
+	return false
+}
+
+func (cuenta *Cuenta) activarCuenta() error {
+	var err error
+
+	if !cuenta.estaActivada() {
+		query := "UPDATE cuentas SET habilitado=1 WHERE id=?"
+		_, err = Exec(query, cuenta.ID)
+		if err == nil {
+			cuenta.habilitado = 1
+		}
+		log.Println("PASÓ POR EL METODO DE ACTIVACIÓN")
+	}
+	return err
+}
+

@@ -84,7 +84,7 @@ func (cliente *Cliente) Guardar() error {
 }
 
 func (cliente *Cliente) registrar() error {
-    query := "INSERT INTO clientes(nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion) VALUES(?,?,?,?,?);"
+    query := "INSERT INTO clientes(nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?);"
     clienteID, err := InsertData(query, cliente.Nombre, cliente.ApellidoPaterno, cliente.ApellidoMaterno, cliente.Clave,
         cliente.habilitado, cliente.fechaCreacion)
     cliente.ID = int(clienteID)
