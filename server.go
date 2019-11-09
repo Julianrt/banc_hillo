@@ -6,23 +6,32 @@ import (
 )
 
 func main () {
+
+	models.CrearTipoTransaccion("TRANSFERENCIA")
+	models.CrearTipoTransaccion("DEPOSITO")
 	
-	cliente, _ := models.CrearCliente("Julián","Ruiz","Tequida", "RUTJ960918HSRZQL01")
+	tipoTransaccion1,_ := models.GetTipoTransaccionByID(1)
+	tipoTransaccion2,_ := models.GetTipoTransaccionByID(2)
 
-	nuevaCuenta,_ := models.AltaCuenta("0000",cliente.ID,1)
+	fmt.Println(tipoTransaccion1)
+	fmt.Println(tipoTransaccion2)
 
-	fmt.Println(nuevaCuenta)
+	tipoTransaccion2.NombreTipoTransaccion = "DEPÓSITO"
+	tipoTransaccion2.Guardar()
+
+	fmt.Println(tipoTransaccion1)
+	fmt.Println(tipoTransaccion2)
+
+	tipoTransaccion2.Eliminar()
 	
-	nuevaCuenta.Depositar(6000.50)
-	nuevaCuenta.Depositar(9500.00)
-
-	fmt.Println("+++++++++++++")
-	fmt.Println(cliente)
-	fmt.Println(nuevaCuenta)
-
+	tiposTransacciones,err := models.GetTiposTransaccion()
+	checkError(err)
+	fmt.Println(tiposTransacciones)
 
 }
 
 func checkError(err error) {
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

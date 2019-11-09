@@ -44,9 +44,6 @@ func getClientes() (Clientes, error) {
     var clientes Clientes
     query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM clientes WHERE habilitado=1"
     rows, err := Query(query)
-    if err != nil {
-        return nil, err
-    }
     for rows.Next(){
         cliente := Cliente{}
         rows.Scan(&cliente.ID, &cliente.Nombre, &cliente.ApellidoPaterno, &cliente.ApellidoMaterno, 
