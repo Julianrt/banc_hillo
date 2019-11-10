@@ -1,8 +1,8 @@
 package models
 
 type TipoCuenta struct {
-	ID 					int
-	NombreTipoCuenta 	string
+	ID                 int
+	NombreTipoCuenta   string
 }
 
 var tipoCuentaSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS tipos_cuenta(

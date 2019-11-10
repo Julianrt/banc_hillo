@@ -25,16 +25,16 @@ var empleadosSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS empleados(
 type Empleados []Empleado
 
 func NuevoEmpleado(nombre, apellido_paterno, apellido_materno, username, password string) *Empleado {
-	empleado := &Empleado{
-		Nombre:		      nombre,
+    empleado := &Empleado{
+        Nombre:	          nombre,
         ApellidoPaterno:  apellido_paterno,
         ApellidoMaterno:  apellido_materno,
-		Username:	      username,
-		Password:         password,
+        Username:         username,
+        Password:         password,
         habilitado:       1,
         fechaCreacion:    ObtenerFechaHoraActualString(),
-	}
-	return empleado
+    }
+    return empleado
 }
 
 func CrearEmpleado(nombre, apellido_paterno, apellido_materno, username, password string) (*Empleado, error) {
@@ -44,36 +44,36 @@ func CrearEmpleado(nombre, apellido_paterno, apellido_materno, username, passwor
 }
 
 func GetEmpleado(sql string, condicion interface{}) (*Empleado, error) {
-	empleado := &Empleado{}
-	rows, err := Query(sql, condicion)
-	for rows.Next() {
-		rows.Scan(&empleado.ID, &empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
+    empleado := &Empleado{}
+    rows, err := Query(sql, condicion)
+    for rows.Next() {
+        rows.Scan(&empleado.ID, &empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
             &empleado.Username, &empleado.Password, &empleado.habilitado, &empleado.fechaCreacion)
-	}
-	return empleado, err
+    }
+    return empleado, err
 }
 
 func GetEmpleadoByID(id int) (*Empleado, error) {
-	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND id=?"
-	return GetEmpleado(sql, id)
+    sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND id=?"
+    return GetEmpleado(sql, id)
 }
 
 func GetEmpleadoByUsername(username string) (*Empleado, error) {
-	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND username=?"
-	return GetEmpleado(sql, username)
+    sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND username=?"
+    return GetEmpleado(sql, username)
 }
 
 func GetEmpleados() Empleados {
-	var empleados Empleados
-	sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1"
-	rows, _ := Query(sql)
-	for rows.Next() {
-		var empleado Empleado
-		rows.Scan(&empleado.ID, &empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
+    var empleados Empleados
+    sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1"
+    rows, _ := Query(sql)
+    for rows.Next() {
+        var empleado Empleado
+        rows.Scan(&empleado.ID, &empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
             &empleado.Username, &empleado.Password, &empleado.habilitado, &empleado.fechaCreacion)
-		empleados = append(empleados, empleado)
-	}
-	return empleados
+        empleados = append(empleados, empleado)
+    }
+    return empleados
 }
 
 /*func LoginEmpleado(username, password string) (*Empleado, error) {

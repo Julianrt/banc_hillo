@@ -6,7 +6,7 @@ var tipoTransaccionSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS tipos_trans
 );`
 
 type TipoTransaccion struct {
-	ID                      int     `json:"id"`
+    ID                      int     `json:"id"`
     NombreTipoTransaccion   string  `json:"tipo_transaccion"`
 }
 

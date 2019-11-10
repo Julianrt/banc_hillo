@@ -9,7 +9,7 @@ type Cuenta struct {
     ID                 int     `json:"id"`
     NumeroDeCuenta     string  `json:"numero_de_cuenta"`
     Saldo              float32 `json:"saldo"`
-    IDCliente          int      `json:"id_cliente"`
+    IDCliente          int     `json:"id_cliente"`
     IDTipoDeCuenta     int     `json:"id_tipo_de_cuenta"`
     habilitado         int
     fechaCreacion      string
