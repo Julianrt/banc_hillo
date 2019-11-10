@@ -7,26 +7,14 @@ import (
 
 func main () {
 
-	models.CrearTipoTransaccion("TRANSFERENCIA")
-	models.CrearTipoTransaccion("DEPOSITO")
-	
-	tipoTransaccion1,_ := models.GetTipoTransaccionByID(1)
-	tipoTransaccion2,_ := models.GetTipoTransaccionByID(2)
+	models.CrearTipoCuenta("fisica3")
+	models.CrearTipoCuenta("fisica4")
+	models.CrearTipoCuenta("moral3")
+	models.CrearTipoCuenta("moral4")
 
-	fmt.Println(tipoTransaccion1)
-	fmt.Println(tipoTransaccion2)
+	tipoCuena,_ := models.GetTiposCuenta()
 
-	tipoTransaccion2.NombreTipoTransaccion = "DEPÓSITO"
-	tipoTransaccion2.Guardar()
-
-	fmt.Println(tipoTransaccion1)
-	fmt.Println(tipoTransaccion2)
-
-	tipoTransaccion2.Eliminar()
-	
-	tiposTransacciones,err := models.GetTiposTransaccion()
-	checkError(err)
-	fmt.Println(tiposTransacciones)
+	fmt.Println(tipoCuena)
 
 }
 
