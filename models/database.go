@@ -37,6 +37,7 @@ func CreateTables() {
 	createTable("empleados", empleadosSchemeSQLITE)
 	createTable("tipos_transaccion", tipoTransaccionSchemeSQLITE)
 	createTable("transacciones", transaccionSchemeSQLITE)
+	createTable("tarjetas", tarjetaSchemeSQLITE)
 	
 }
 

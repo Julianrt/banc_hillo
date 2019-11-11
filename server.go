@@ -7,14 +7,12 @@ import (
 
 func main () {
 
-	models.CrearTipoCuenta("fisica3")
-	models.CrearTipoCuenta("fisica4")
-	models.CrearTipoCuenta("moral3")
-	models.CrearTipoCuenta("moral4")
-
-	tipoCuena,_ := models.GetTiposCuenta()
-
-	fmt.Println(tipoCuena)
+	//tarjeta, err := models.GetTarjetaByID(2)
+	//checkError(err)
+	//fmt.Println(tarjeta)
+	//tarjeta.Eliminar()
+	tarjetas,_ := models.GetTarjetas()
+	fmt.Println(tarjetas)
 
 }
 
