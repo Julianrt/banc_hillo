@@ -7,12 +7,15 @@ import (
 
 func main () {
 
-	//tarjeta, err := models.GetTarjetaByID(2)
-	//checkError(err)
-	//fmt.Println(tarjeta)
-	//tarjeta.Eliminar()
-	tarjetas,_ := models.GetTarjetas()
-	fmt.Println(tarjetas)
+	login, err := models.GetLoginByToken("b1215b66da95f915b2a1c2447ef6fbe0502992dd")
+	checkError(err)
+	fmt.Println(login)
+
+	login.Eliminar()
+
+	login, err = models.GetLoginByToken("b1215b66da95f915b2a1c2447ef6fbe0502992dd")
+	checkError(err)
+	fmt.Println(login)
 
 }
 

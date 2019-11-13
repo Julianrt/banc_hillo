@@ -38,7 +38,7 @@ func CreateTables() {
 	createTable("tipos_transaccion", tipoTransaccionSchemeSQLITE)
 	createTable("transacciones", transaccionSchemeSQLITE)
 	createTable("tarjetas", tarjetaSchemeSQLITE)
-	
+	createTable("logins", loginSchemeSQLITE)
 }
 
 /*func createTable(tableName, scheme string) {
