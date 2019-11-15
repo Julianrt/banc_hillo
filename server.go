@@ -1,26 +1,37 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"./routers"
+	"github.com/gorilla/mux"
+	
 	"./models"
-	"fmt"
 )
 
 func main () {
+	models.CrearCliente("Cine","","","RFC")
+	models.AltaCuenta("1234",1,2)
+	models.CrearTarjeta(1,1,"0000", "1111", "11/21", "123")
+	cuenta1,_ := models.GetCuentaByID(1)
+	cuenta1.Depositar(10590)
 
-	login, err := models.GetLoginByToken("b1215b66da95f915b2a1c2447ef6fbe0502992dd")
-	checkError(err)
-	fmt.Println(login)
+	models.CrearCliente("pepito","","","CURP")
+	models.AltaCuenta("4444",2,1)
+	models.CrearTarjeta(2,2,"9999", "1111", "11/21", "123")
+	cuenta2,_ := models.GetCuentaByID(2)
+	cuenta2.Depositar(3600)
 
-	login.Eliminar()
 
-	login, err = models.GetLoginByToken("b1215b66da95f915b2a1c2447ef6fbe0502992dd")
-	checkError(err)
-	fmt.Println(login)
 
-}
 
-func checkError(err error) {
-	if err != nil {
-		fmt.Println(err)
+	mux := mux.NewRouter()
+	routers.Endpoints(mux)
+
+	log.Println("El servidor está escuchando por el puerto :8000")
+	server := http.Server{
+		Addr: 		":8000",
+		Handler: 	mux,
 	}
+	log.Fatal(server.ListenAndServe())
 }

@@ -4,7 +4,7 @@ var tarjetaSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS tarjetas(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     id_cuenta INTEGER NOT NULL,
     id_cliente INTEGER NOT NULL,
-    numero_tarjeta TEXT NOT NULL,
+    numero_tarjeta TEXT NOT NULL UNIQUE,
     nip TEXT NOT NULL,
     fecha_vencimiento TEXT,
     numero_seguridad TEXT,
@@ -61,6 +61,11 @@ func getTarjeta(query string, condicion interface{}) (*Tarjeta, error) {
 func GetTarjetaByID(id int) (*Tarjeta, error) {
     query := "SELECT id, id_cuenta, id_cliente, numero_tarjeta, nip, fecha_vencimiento, numero_seguridad, habilitado, fecha_creacion FROM tarjetas WHERE id=?"
     return getTarjeta(query, id)
+}
+
+func GetTarjetaByNumeroTarjeta(numeroTarjeta string) (*Tarjeta, error) {
+    query := "SELECT id, id_cuenta, id_cliente, numero_tarjeta, nip, fecha_vencimiento, numero_seguridad, habilitado, fecha_creacion FROM tarjetas WHERE numero_tarjeta=?"
+    return getTarjeta(query, numeroTarjeta)
 }
 
 func GetTarjetas() (Tarjetas, error){

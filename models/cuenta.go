@@ -15,6 +15,8 @@ type Cuenta struct {
     fechaCreacion      string
 }
 
+type Cuentas []Cuenta
+
 var cuentaSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS cuentas(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     numero_de_cuenta TEXT NOT NULL UNIQUE,
@@ -31,7 +33,7 @@ func nuevaCuenta(numeroDeCuenta string, idCliente, idTipoDeCuenta int) *Cuenta {
         Saldo:          0.0,
         IDCliente:      idCliente,
         IDTipoDeCuenta: idTipoDeCuenta,
-        habilitado:     0,
+        habilitado:     1,
         fechaCreacion:  ObtenerFechaHoraActualString(),
     }
     return cuenta
@@ -43,18 +45,37 @@ func AltaCuenta(numeroDeCuenta string, idCliente, idTipoDeCuenta int) (*Cuenta, 
     return cuenta, err
 }
 
-func GetCuentaByNumeroCuenta(numeroDeCuenta int) (*Cuenta, error) {
+func getCuenta(sqlQuery string, condicion interface{}) (*Cuenta, error) {
 	cuenta := &Cuenta{}
-	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE numero_de_cuenta = ?"
-	rows, err := Query(query, numeroDeCuenta)
-	if err != nil {
-		return cuenta, err
-	}
+	rows, err := Query(sqlQuery, condicion)
 	for rows.Next() {
 		rows.Scan(&cuenta.ID, &cuenta.NumeroDeCuenta, &cuenta.Saldo, &cuenta.IDCliente, &cuenta.IDTipoDeCuenta, 
             &cuenta.habilitado, &cuenta.fechaCreacion)
 	}
-	return cuenta, nil
+	return cuenta, err
+}
+
+func GetCuentaByID(id int) (*Cuenta, error) {
+	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE id=?"
+	return getCuenta(query, id)
+}
+
+func GetCuentaByNumeroCuenta(numeroDeCuenta string) (*Cuenta, error) {
+	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE numero_de_cuenta=?"
+	return getCuenta(query, numeroDeCuenta)
+}
+
+func GetCuentas() (Cuentas, error) {
+	var cuentas Cuentas
+	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE numero_de_cuenta = ?"
+	rows, err := Query(query)
+	for rows.Next() {
+		cuenta := Cuenta{}
+		rows.Scan(&cuenta.ID, &cuenta.NumeroDeCuenta, &cuenta.Saldo, &cuenta.IDCliente, &cuenta.IDTipoDeCuenta, 
+            &cuenta.habilitado, &cuenta.fechaCreacion)
+        cuentas = append(cuentas, cuenta)
+	}
+	return cuentas, err
 }
 
 func (cuenta *Cuenta) Depositar(monto float32) error {
@@ -75,7 +96,7 @@ func (cuenta *Cuenta) Retirar(monto float32) error {
 	}
 }
 
-func (cuenta *Cuenta) Transferir(numeroCuentaDestino int, monto float32) error {
+func (cuenta *Cuenta) Transferir(numeroCuentaDestino string, monto float32) error {
 	cuentaDestino := &Cuenta{}
 	err := errors.New("")
 
