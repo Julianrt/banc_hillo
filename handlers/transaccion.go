@@ -15,24 +15,16 @@ type Transferencia struct {
 	Monto 			float32 	`json:"monto"`
 }
 
-/*func GetEmpleados(w http.ResponseWriter, r *http.Request) {
-	models.SendData(w, models.GetEmpleados())
-}*/
+type Desposito struct {
+	TarjetaDestino 	string  	`json:"tarjeta_destino"`
+	Monto 			float32 	`json:"monto"`
+}
 
-/*
-func GetCiudad(w http.ResponseWriter, r *http.Request) {
-	if ciudad, err := getCiudadByRequest(r); err != nil {
-		models.SendNotFound(w)
-	} else {
-		if ciudad.ID == 0 {
-			models.SendNotFound(w)
-			return
-		}
-		models.SendData(w, ciudad)
-	}
-}*/
+func GetTransacciones(w http.ResponseWriter, r *http.Request) {
+	transacciones,_ := models.GetTransacciones()
+	models.SendData(w, transacciones)
+}
 
-//CreateCiudad method
 func DoTransferencia(w http.ResponseWriter, r *http.Request) {
 	var transferencia Transferencia
 	decoder := json.NewDecoder(r.Body)
@@ -53,46 +45,24 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
 	}
 		transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
 		models.SendData(w, transaccion)
-
 }
 
-//UpdateCiudad method
-/*func UpdateCiudad(w http.ResponseWriter, r *http.Request) {
-	ciudad, err := getCiudadByRequest(r)
-	if err != nil {
-		models.SendNotFound(w)
-		return
-	}
-
-	var ciudadResponse models.Ciudad
+func DoDeposito(w http.ResponseWriter, r *http.Request) {
+	var deposito Desposito
 	decoder := json.NewDecoder(r.Body)
 
-	if err := decoder.Decode(&ciudadResponse); err != nil {
+	if err := decoder.Decode(&deposito); err != nil {
 		models.SendUnprocessableEntity(w)
+	}
+	tarjetaDestino, err := models.GetTarjetaByNumeroTarjeta(deposito.TarjetaDestino)
+	cuentaDestino, err := models.GetCuentaByID(tarjetaDestino.IDCuenta)
+	
+	err = cuentaDestino.Depositar(deposito.Monto)
+	if err != nil {
+		models.SendNotFound(w)
 		return
 	}
-	ciudadResponse.ID = ciudad.ID
-	ciudadResponse.Save()
-	models.SendData(w, ciudadResponse)
+	
+	transaccion,_ := models.CrearTransaccion(deposito.Monto, 1, "", deposito.TarjetaDestino, 1)
+	models.SendData(w, transaccion)
 }
-
-//DeleteCiudad method
-func DeleteCiudad(w http.ResponseWriter, r *http.Request) {
-	if ciudad, err := getCiudadByRequest(r); err != nil {
-		models.SendNotFound(w)
-	} else {
-		ciudad.Delete()
-		models.SendNoContent(w)
-	}
-}
-
-func getCiudadByRequest(r *http.Request) (*models.Ciudad, error) {
-	vars := mux.Vars(r)
-	ciudadID, _ := strconv.Atoi(vars["id"])
-
-	ciudad, err := models.GetCiudad(ciudadID)
-	if err != nil {
-		return ciudad, err
-	}
-	return ciudad, nil
-}*/

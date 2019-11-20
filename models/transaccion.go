@@ -15,8 +15,8 @@ type Transaccion struct {
     Fecha                   string  `json:"fecha"`
     Monto                   float32 `json:"monto"`
     Estado                  int     `json:"estado"`
-    NumeroTarjetaOrigen     string  `json:"id_tarjeta_origen"`
-    NumeroTarjetaDestino    string  `json:"id_tarjeta_destino"`
+    NumeroTarjetaOrigen     string  `json:"numero_tarjeta_origen"`
+    NumeroTarjetaDestino    string  `json:"numero_tarjeta_destino"`
     IDTipoTransaccion       int     `json:"id_tipo_transaccion"`
 }
 

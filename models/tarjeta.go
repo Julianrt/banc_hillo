@@ -89,6 +89,8 @@ func (tarjeta *Tarjeta) Guardar() error {
 }
 
 func (tarjeta *Tarjeta) registrar () error {
+    tarjeta.habilitado=1
+    tarjeta.fechaCreacion=ObtenerFechaHoraActualString()
     query := "INSERT INTO tarjetas(id_cuenta, id_cliente, numero_tarjeta, nip, fecha_vencimiento, numero_seguridad, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?,?,?);"
     tarjetaID, err := InsertData(query, tarjeta.IDCuenta, tarjeta.IDCliente, tarjeta.NumeroTarjeta, 
         tarjeta.Nip, tarjeta.FechaVencimiento, tarjeta.NumeroSeguridad, tarjeta.habilitado, tarjeta.fechaCreacion)

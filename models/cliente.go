@@ -1,5 +1,7 @@
 package models
 
+import "log"
+
 var clienteSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS clientes(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
@@ -40,13 +42,13 @@ func CrearCliente(nombre, apellido_paterno, apellido_materno, clave string) (*Cl
     return cliente, err
 }
 
-func getClientes() (Clientes, error) {
+func GetClientes() (Clientes, error) {
     var clientes Clientes
     query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM clientes WHERE habilitado=1"
     rows, err := Query(query)
     for rows.Next(){
         cliente := Cliente{}
-        rows.Scan(&cliente.ID, &cliente.Nombre, &cliente.ApellidoPaterno, &cliente.ApellidoMaterno, 
+        rows.Scan(&cliente.ID, &cliente.Nombre, &cliente.ApellidoPaterno, &cliente.ApellidoMaterno, &cliente.Clave,
             &cliente.habilitado, &cliente.fechaCreacion)
         clientes = append(clientes, cliente)
     }
@@ -54,22 +56,23 @@ func getClientes() (Clientes, error) {
 }
 
 func getCliente(query string, condicion interface{}) (*Cliente, error) {
-    cliente := &Cliente{}
+    cliente := Cliente{}
     rows, err := Query(query, condicion)
     for rows.Next() {
         rows.Scan(&cliente.ID, &cliente.Nombre, &cliente.ApellidoPaterno, &cliente.ApellidoMaterno, &cliente.Clave,
             &cliente.habilitado, &cliente.fechaCreacion)
     }
-    return cliente, err
+    log.Println(cliente)
+    return &cliente, err
 }
 
-func getClienteByID(id int) (*Cliente, error) {
-    query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM habilitado=1 AND id=?"
+func GetClienteByID(id int) (*Cliente, error) {
+    query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM clientes WHERE habilitado=1 AND id=?"
     return getCliente(query, id)
 }
 
-func getClienteByClave(clave string) (*Cliente, error) {
-    query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM habilitado=1 AND clave=?"
+func GetClienteByClave(clave string) (*Cliente, error) {
+    query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM clientes WHERE habilitado=1 AND clave=?"
     return getCliente(query, clave)
 }
 
@@ -81,6 +84,8 @@ func (cliente *Cliente) Guardar() error {
 }
 
 func (cliente *Cliente) registrar() error {
+    cliente.habilitado=1
+    cliente.fechaCreacion=ObtenerFechaHoraActualString()
     query := "INSERT INTO clientes(nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?);"
     clienteID, err := InsertData(query, cliente.Nombre, cliente.ApellidoPaterno, cliente.ApellidoMaterno, cliente.Clave,
         cliente.habilitado, cliente.fechaCreacion)

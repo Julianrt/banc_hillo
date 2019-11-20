@@ -1,9 +1,6 @@
 package models
 
-import (
-	"errors"
-	"log"
-)
+import "errors"
 
 type Cuenta struct {
     ID                 int     `json:"id"`
@@ -33,7 +30,7 @@ func nuevaCuenta(numeroDeCuenta string, idCliente, idTipoDeCuenta int) *Cuenta {
         Saldo:          0.0,
         IDCliente:      idCliente,
         IDTipoDeCuenta: idTipoDeCuenta,
-        habilitado:     1,
+        habilitado:     0,
         fechaCreacion:  ObtenerFechaHoraActualString(),
     }
     return cuenta
@@ -67,7 +64,7 @@ func GetCuentaByNumeroCuenta(numeroDeCuenta string) (*Cuenta, error) {
 
 func GetCuentas() (Cuentas, error) {
 	var cuentas Cuentas
-	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE numero_de_cuenta = ?"
+	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE habilitado=1"
 	rows, err := Query(query)
 	for rows.Next() {
 		cuenta := Cuenta{}
@@ -132,6 +129,7 @@ func (cuenta *Cuenta) Guardar() error {
 }
 
 func (cuenta *Cuenta) registrar() error {
+	cuenta.fechaCreacion=ObtenerFechaHoraActualString()
 	query := "INSERT INTO cuentas(numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?);"
 	cuentaID, err := InsertData(query, cuenta.NumeroDeCuenta, cuenta.Saldo, cuenta.IDCliente, cuenta.IDTipoDeCuenta, 
         cuenta.habilitado, cuenta.fechaCreacion)
@@ -162,7 +160,6 @@ func (cuenta *Cuenta) activarCuenta() error {
 		if err == nil {
 			cuenta.habilitado = 1
 		}
-		log.Println("PASÓ POR EL METODO DE ACTIVACIÓN")
 	}
 	return err
 }
