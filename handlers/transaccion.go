@@ -26,6 +26,7 @@ func GetTransacciones(w http.ResponseWriter, r *http.Request) {
 }
 
 func DoTransferencia(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	var transferencia Transferencia
 	decoder := json.NewDecoder(r.Body)
 
