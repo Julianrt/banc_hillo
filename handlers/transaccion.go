@@ -32,6 +32,7 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
 
 	if err := decoder.Decode(&transferencia); err != nil {
 		models.SendUnprocessableEntity(w)
+		return
 	}
 	tarjetaOrigen, err := models.GetTarjetaByNumeroTarjeta(transferencia.TarjetaOrigen)
 	cuentaOrigen, err := models.GetCuentaByID(tarjetaOrigen.IDCuenta)
@@ -44,8 +45,8 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
 		models.SendNotFound(w)
 		return
 	}
-		transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
-		models.SendData(w, transaccion)
+	transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
+	models.SendData(w, transaccion)
 }
 
 func DoDeposito(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,7 @@ func DoDeposito(w http.ResponseWriter, r *http.Request) {
 
 	if err := decoder.Decode(&deposito); err != nil {
 		models.SendUnprocessableEntity(w)
+		return
 	}
 	tarjetaDestino, err := models.GetTarjetaByNumeroTarjeta(deposito.TarjetaDestino)
 	cuentaDestino, err := models.GetCuentaByID(tarjetaDestino.IDCuenta)
