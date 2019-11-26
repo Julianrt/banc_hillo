@@ -10,9 +10,11 @@ import (
 )
 
 type Transferencia struct {
-	TarjetaOrigen 	string 		`json:"tarjeta_origen"`
-	TarjetaDestino 	string  	`json:"tarjeta_destino"`
-	Monto 			float32 	`json:"monto"`
+	TarjetaOrigen 	    string 		`json:"tarjeta_origen"`
+    FechaVencimiento    string      `json:"fecha_vencimiento"`
+    Cvv                 string      `json:"cvv"`
+	TarjetaDestino      string  	`json:"tarjeta_destino"`
+	Monto               float32 	`json:"monto"`
 }
 
 type Desposito struct {
@@ -34,19 +36,26 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
 		models.SendUnprocessableEntity(w)
 		return
 	}
-	tarjetaOrigen, err := models.GetTarjetaByNumeroTarjeta(transferencia.TarjetaOrigen)
-	cuentaOrigen, err := models.GetCuentaByID(tarjetaOrigen.IDCuenta)
-	
-	tarjetaDestino, err := models.GetTarjetaByNumeroTarjeta(transferencia.TarjetaDestino)
-	cuentaDestino, err := models.GetCuentaByID(tarjetaDestino.IDCuenta)
-	
-	err = cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, transferencia.Monto)
-	if err != nil {
-		models.SendNotFound(w)
-		return
-	}
-	transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
-	models.SendData(w, transaccion)
+
+    if models.ValidTarjeta(transferencia.TarjetaOrigen, transferencia.FechaVencimiento, transferencia.Cvv) {
+
+        tarjetaOrigen, err := models.GetTarjetaByNumeroTarjeta(transferencia.TarjetaOrigen)
+        cuentaOrigen, err := models.GetCuentaByID(tarjetaOrigen.IDCuenta)
+    	
+        tarjetaDestino, err := models.GetTarjetaByNumeroTarjeta(transferencia.TarjetaDestino)
+    	cuentaDestino, err := models.GetCuentaByID(tarjetaDestino.IDCuenta)
+    	
+        err = cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, transferencia.Monto)
+        if err != nil {
+            models.SendNotFound(w)
+            return
+        }
+        transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
+        models.SendData(w, transaccion)
+        return
+    }
+
+    models.SendNotFound(w)
 }
 
 func DoDeposito(w http.ResponseWriter, r *http.Request) {

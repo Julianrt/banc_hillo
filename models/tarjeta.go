@@ -81,6 +81,14 @@ func GetTarjetas() (Tarjetas, error){
     return tarjetas, err
 }
 
+func ValidTarjeta(numeroTarjeta, fechaVencimiento, cvv string) bool {
+    tarjeta, _ := GetTarjetaByNumeroTarjeta(numeroTarjeta)
+    if tarjeta.FechaVencimiento == fechaVencimiento && tarjeta.NumeroSeguridad == cvv {
+        return true
+    }
+    return false
+}
+
 func (tarjeta *Tarjeta) Guardar() error {
     if tarjeta.ID == 0 {
         return tarjeta.registrar()
