@@ -1,11 +1,11 @@
-package handlers
+package api
 
 import (
 	"encoding/json"
 	"net/http"
 	//"strconv"
 
-	"../models"
+	"../../models"
 	//"github.com/gorilla/mux"
 )
 
@@ -44,15 +44,17 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
     	
         tarjetaDestino, err := models.GetTarjetaByNumeroTarjeta(transferencia.TarjetaDestino)
     	cuentaDestino, err := models.GetCuentaByID(tarjetaDestino.IDCuenta)
-    	
-        err = cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, transferencia.Monto)
-        if err != nil {
-            models.SendNotFound(w)
-            return
-        }
-        transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
-        models.SendData(w, transaccion)
-        return
+
+    	if tarjetaOrigen.ID != 0 && tarjetaDestino.ID != 0 {
+        	err = cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, transferencia.Monto)
+        	if err != nil {
+            	models.SendNotFound(w)
+            	return
+        	}
+        	transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
+        	models.SendData(w, transaccion)
+        	return
+    	}
     }
 
     models.SendNotFound(w)
@@ -77,4 +79,8 @@ func DoDeposito(w http.ResponseWriter, r *http.Request) {
 	
 	transaccion,_ := models.CrearTransaccion(deposito.Monto, 1, "", deposito.TarjetaDestino, 1)
 	models.SendData(w, transaccion)
+}
+
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }

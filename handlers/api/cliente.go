@@ -1,11 +1,11 @@
-package handlers
+package api
 
 import (
 	"encoding/json"
 	"net/http"
 	"strconv"
 
-	"../models"
+	"../../models"
 	"github.com/gorilla/mux"
 )
 
