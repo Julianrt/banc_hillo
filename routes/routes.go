@@ -67,4 +67,6 @@ func application(mux *mux.Router) {
 	mux.HandleFunc("/", app.Index)
 	mux.HandleFunc("/login/", app.Login)
 	mux.HandleFunc("/cliente/", app.Cliente)
+	mux.HandleFunc("/cajero/", app.Cajero)
+	mux.HandleFunc("/admin/", app.Admin)
 }
