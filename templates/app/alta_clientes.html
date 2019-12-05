@@ -1,3 +1,4 @@
+{{ define "app/alta_cliente"}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +13,13 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/">
                     Banco de Hermosillo
                 </a>
             </div>
             <div class="collapse navbar-collapse navbar-right">
                 <ul>
-                    <a class="navbar-brand btn" href="C:\Users\ibarr\Desktop\index.html">
+                    <a class="navbar-brand btn" href="/">
                             Salir
                     </a>
                 </ul>
@@ -26,13 +27,30 @@
         </div>
         
     </nav>
+    <div class="container">
+        <h3>Seleccionar una opcion:</h3>
+        <div class="col-md-4">
+            <Select class="form-control" id="inputSelect">
+                <option value="1">Seleccione una opcion</option>
+                <option value="2">Alta Cuentas</option>
+                <option value="3">Consultar cuenta</option>
+            </Select>
+        </div>
+
+    </div>
+    <div id="div1"></div>
     <center>
-       <div class="col-md-offset-4 col-md-4">
-            <h2>Servicio de alta de clientes</h2><br><br>
+       <div class="col-md-offset-4 col-md-4" id="div2">
+            <h2>Alta de clientes</h2>
                     <form action="" class="">
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="">Datos del solicitante <br><br> Nombres:</label>
+                            <h3>Datos del solicitante</h3>
+                            <label>Tipo de persona:</label>
+                            <select name="TipodePersona" id="Tpersona" class="form-control">
+                                <option value="1">Fisica</option>
+                                <option value="2">Moral</option>
+                            </select><br><br> <label>Nombres:</label>
                             <input type="text" placeholder="Nombre" class="form-control"><br>
                             <label for="">Apellidos</label> 
                         </div>
@@ -50,6 +68,80 @@
                     <button type="submit" class="btn btn-primary form-control">Entrar</button>
                     </form>
         </div>
+        <center>
+            <div id="div3" class="container">
+                <h2>Consultar Movimientos y Saldo</h2>
+                <form action="">
+                    <label for="Numero de tarjeta:"></label>
+                    <div class="col-md-4">
+                    <input type="text" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-default">Consultar</button>
+                    </div>
+                    <div class="col-md-2 col-md-offset-2">
+                            <h4>Saldo disponible:</h4>
+                    </div>
+                </form>
+                <div class="container">
+                        <table class="table" >
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">Codigo de transaccion</th>
+                                <th scope="col">Fecha y hora</th>
+                                <th scope="col">Monto</th>
+                                <th scope="col">estado</th>
+                                <th scope="col">Tarjeta destino</th>
+                                <th scope="col">Tipo transaccion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              </tbody>
+                        </table>
+                    </div>
+            </div>
+        </center>
 
+        <script>
+            $(function() {
+
+                $("#inputSelect").on('change', function() {
+
+                var selectValue = $(this).val();
+                switch (selectValue) {
+
+                    case "1":
+                    $("#div1").show();
+                    $("#div2").hide();
+                    $("#div3").hide();
+                    break;
+
+                    case "2":
+                    $("#div1").hide();
+                    $("#div2").show();
+                    $("#div3").hide();
+                    break;
+
+                    case "3":
+                    $("#div1").hide();
+                    $("#div2").hide();
+                    $("#div3").show();
+                    break;
+
+                }
+
+                }).change();
+
+            });
+        </script>
 </body>
 </html>
+{{end}}
