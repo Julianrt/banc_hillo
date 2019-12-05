@@ -3,6 +3,8 @@ package app
 import (
 	"net/http"
 	"../../utils"
+	"strconv"
+	"../app"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -41,7 +43,22 @@ func Cajero(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		utils.RenderTemplate(w, "app/cajero", nil)
 	} else if r.Method == "POST" {
+		tarjetaOrigen := r.FormValue("tarjetaOrigen")
+		cvv := r.FormValue("cvv");
+		mes:= r.FormValue("mes");
+		ano:= r.FormValue("ano");
+		tarjetaDestino:= r.FormValue("tarjetaDestino");
+		monto:= r.FormValue("monto");
+		if tarjetaDestino != "" && monto != "" {
+			montito,_ := strconv.Atoi(monto)
+			if tarjetaOrigen != "" && cvv != "" && mes != "" && ano!=""{
+				//Aqui Transferencia
+				
+			}else{
+				//Aqui Deposito
 
+			}
+		} 
 	}
 
 }

@@ -34,18 +34,24 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="">Tarjeta Origen</label>
-                            <input type="text" placeholder="Numero de tarjeta" class="form-control">
+                            <input type="text" placeholder="Numero de tarjeta" class="form-control" id="tarjetaOrigen" name="tarjetaOrigen">
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="email" class="form-control" id="" placeholder="CVV">
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV">
                         </div>
-                        <div class="form-group col-md-6">
-                            <input type="password" class="form-control" id="" placeholder="MM/AA">
+                        <div class="form-group col-md-3">
+                            <input type="password" class="form-control" id="mes" name="mes" placeholder="MM">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <input type="text" name="AA" id="ano" name="ano" class="form-control" placeholder="AA">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="">Tarjeta Destino</label>
-                        <input type="text" class="form-control" placeholder="Numero de Tarjeta">
+                        <input type="text" class="form-control" placeholder="Numero de Tarjeta" id="tarjetaDestino" name="tarjetaDestino">
+                    </div>
+                    <div>
+                        <input type="number" name="monto" id="monto" placeholder="Monto a depositar o transferir" class="form-control"><br>
                     </div>
                     <button type="submit" class="btn btn-primary form-control">Entrar</button>
                     </form>
