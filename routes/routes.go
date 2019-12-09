@@ -28,12 +28,14 @@ func cuentasEndpoints(mux *mux.Router) {
 	mux.HandleFunc("/api/cuentas/", api.GetCuentas).Methods("GET")
 	mux.HandleFunc("/api/cuentas/{id:[0-9]+}", api.GetCuenta).Methods("GET")
 	mux.HandleFunc("/api/cuentas/", api.CreateCuenta).Methods("POST")
+	mux.HandleFunc("/api/cuentas/{id:[0-9]+}", api.UpdateCuenta).Methods("PUT")
 }
 
 func tarjetasEndpoints(mux *mux.Router) {
 	mux.HandleFunc("/api/tarjetas/", api.GetTarjetas).Methods("GET")
 	mux.HandleFunc("/api/tarjetas/{id:[0-9]+}", api.GetTarjeta).Methods("GET")
 	mux.HandleFunc("/api/tarjetas/", api.CreateTarjeta).Methods("POST")
+	mux.HandleFunc("/api/tarjetas/{id:[0-9]+}", api.UpdateTarjeta).Methods("PUT")
 }
 
 func tiposCuentaEndpoints(mux *mux.Router) {

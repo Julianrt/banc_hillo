@@ -129,6 +129,7 @@ func (cuenta *Cuenta) Guardar() error {
 }
 
 func (cuenta *Cuenta) registrar() error {
+	cuenta.NumeroDeCuenta="5050"+RandomDigits(16)
 	cuenta.fechaCreacion=ObtenerFechaHoraActualString()
 	query := "INSERT INTO cuentas(numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?);"
 	cuentaID, err := InsertData(query, cuenta.NumeroDeCuenta, cuenta.Saldo, cuenta.IDCliente, cuenta.IDTipoDeCuenta, 
@@ -137,10 +138,15 @@ func (cuenta *Cuenta) registrar() error {
 	return err
 }
 
+func (cuenta *Cuenta) ActualizarCuenta() error {
+	cuenta.habilitado = 1
+	return cuenta.actualizar()
+}
+
 func (cuenta *Cuenta) actualizar() error {
-	query := "UPDATE cuentas SET saldo=?, id_cliente=?, id_tipo_de_cuenta=?, habilitado=?, fecha_creacion=? WHERE numero_de_cuenta=?;"
-	_, err := Exec(query, cuenta.Saldo, cuenta.IDCliente, cuenta.IDTipoDeCuenta, cuenta.habilitado, cuenta.fechaCreacion, 
-        cuenta.NumeroDeCuenta)
+	query := "UPDATE cuentas SET numero_de_cuenta=?, saldo=?, id_cliente=?, id_tipo_de_cuenta=?, habilitado=?, fecha_creacion=? WHERE id=?;"
+	_, err := Exec(query, cuenta.NumeroDeCuenta, cuenta.Saldo, cuenta.IDCliente, cuenta.IDTipoDeCuenta, cuenta.habilitado, 
+		cuenta.fechaCreacion, cuenta.ID)
 	return err
 }
 
@@ -164,3 +170,10 @@ func (cuenta *Cuenta) activarCuenta() error {
 	return err
 }
 
+func (cuenta *Cuenta) GetFechaCreacion() string {
+	return cuenta.fechaCreacion
+}
+
+func (cuenta *Cuenta) SetFechaCreacion(fechaCreacion string) {
+	cuenta.fechaCreacion = fechaCreacion
+}

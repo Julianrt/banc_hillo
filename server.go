@@ -13,9 +13,9 @@ func main () {
     mux := mux.NewRouter()
     routes.Endpoints(mux)
 
-    assets := http.FileServer(http.Dir("assets"))
-    statics := http.StripPrefix("/assets/", assets)
-    mux.PathPrefix("/assets/").Handler(statics)
+    //assets := http.FileServer(http.Dir("assets"))
+    //statics := http.StripPrefix("/assets/", assets)
+    //mux.PathPrefix("/assets/").Handler(statics)
 
     log.Println("El servidor está escuchando por el puerto :8000")
     server := http.Server{

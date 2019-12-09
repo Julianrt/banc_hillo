@@ -3,8 +3,7 @@ package app
 import (
 	"net/http"
 	"../../utils"
-	"strconv"
-	"../app"
+	//"strconv"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +49,7 @@ func Cajero(w http.ResponseWriter, r *http.Request) {
 		tarjetaDestino:= r.FormValue("tarjetaDestino");
 		monto:= r.FormValue("monto");
 		if tarjetaDestino != "" && monto != "" {
-			montito,_ := strconv.Atoi(monto)
+			//montito,_ := strconv.Atoi(monto)
 			if tarjetaOrigen != "" && cvv != "" && mes != "" && ano!=""{
 				//Aqui Transferencia
 				

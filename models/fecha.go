@@ -14,3 +14,11 @@ func ObtenerFechaHoraActualString() string {
 
 	return fechaHora
 }
+
+func GetFechaVencimientoString() string {
+	t := time.Now()
+	mes := fmt.Sprintf("%02d",t.Month())
+	year := fmt.Sprintf("%02d",t.Year()-1998)
+	fecha := mes+"/"+year
+	return fecha
+}

@@ -7,6 +7,7 @@ import (
 
 	"../../models"
 	"github.com/gorilla/mux"
+	"log"
 )
 
 
@@ -37,6 +38,30 @@ func CreateCuenta(w http.ResponseWriter, r *http.Request) {
 		cuenta.Guardar()
 		models.SendData(w, cuenta)
 	}
+}
+
+func UpdateCuenta (w http.ResponseWriter, r *http.Request) {
+	cuenta, err := getCuentaByRequest(r)
+	if err != nil {
+		models.SendNotFound(w)
+		return
+	}
+
+	var cuentaResponse models.Cuenta
+	decoder := json.NewDecoder(r.Body)
+
+	if err := decoder.Decode(&cuentaResponse); err != nil {
+		models.SendUnprocessableEntity(w)
+		return
+	}
+
+	cuentaResponse.ID = cuenta.ID
+	cuentaResponse.SetFechaCreacion(cuenta.GetFechaCreacion())
+	if err := cuentaResponse.ActualizarCuenta(); err != nil {
+		log.Println(err)
+	}
+
+	models.SendData(w, cuentaResponse)
 }
 
 func getCuentaByRequest(r *http.Request) (*models.Cuenta, error) {
