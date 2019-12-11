@@ -62,6 +62,11 @@ func GetCuentaByNumeroCuenta(numeroDeCuenta string) (*Cuenta, error) {
 	return getCuenta(query, numeroDeCuenta)
 }
 
+func GetCuentaByNumeroTarjeta(numeroDeTarjeta string) (*Cuenta, error) {
+	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE id in (SELECT id_cuenta FROM tarjetas WHERE numero_tarjeta=?)"
+	return getCuenta(query, numeroDeTarjeta)
+}
+
 func GetCuentas() (Cuentas, error) {
 	var cuentas Cuentas
 	query := "SELECT id, numero_de_cuenta, saldo, id_cliente, id_tipo_de_cuenta, habilitado, fecha_creacion FROM cuentas WHERE habilitado=1"

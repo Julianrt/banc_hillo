@@ -81,6 +81,19 @@ func GetTarjetas() (Tarjetas, error){
     return tarjetas, err
 }
 
+func GetTarjetasByIDCuenta(idCuenta int) (Tarjetas, error) {
+    var tarjetas Tarjetas
+    query := "SELECT id, id_cuenta, id_cliente, numero_tarjeta, nip, fecha_vencimiento, numero_seguridad, habilitado, fecha_creacion FROM tarjetas WHERE id_cuenta=?"
+    rows, err := Query(query, idCuenta)
+    for rows.Next() {
+        var t Tarjeta
+        rows.Scan(&t.ID, &t.IDCuenta, &t.IDCliente, &t.NumeroTarjeta, &t.Nip, &t.FechaVencimiento, 
+            &t.NumeroSeguridad, &t.habilitado, &t.fechaCreacion)
+        tarjetas = append(tarjetas, t)
+    }
+    return tarjetas, err
+}
+
 func ValidTarjeta(numeroTarjeta, fechaVencimiento, cvv string) bool {
     tarjeta, _ := GetTarjetaByNumeroTarjeta(numeroTarjeta)
     if tarjeta.FechaVencimiento == fechaVencimiento && tarjeta.NumeroSeguridad == cvv {

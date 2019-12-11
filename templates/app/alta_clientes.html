@@ -42,31 +42,31 @@
     <center>
        <div class="col-md-offset-4 col-md-4" id="div2">
             <h2>Alta de clientes</h2>
-                    <form action="" class="">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <h3>Datos del solicitante</h3>
-                            <label>Tipo de persona:</label>
-                            <select name="TipodePersona" id="Tpersona" class="form-control">
-                                <option value="1">Fisica</option>
-                                <option value="2">Moral</option>
-                            </select><br><br> <label>Nombres:</label>
-                            <input type="text" placeholder="Nombre" class="form-control"><br>
-                            <label for="">Apellidos</label> 
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="Apellido materno" class="form-control" id="" placeholder="Materno">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="Apellido paterno" class="form-control" id="" placeholder="Paterno">
-                        </div>
-                    </div>
+            <form method="GET" action="/admin/" class="">
+                <div class="form-row">
                     <div class="form-group">
-                        <label for="">Clave</label>
-                        <input type="text" class="form-control" placeholder="RFC/CURP">
+                        <h3>Datos del solicitante</h3>
+                        <label>Tipo de persona:</label>
+                        <select name="tipo_persona" id="tipo_persona" class="form-control">
+                            <option value="1">Fisica</option>
+                            <option value="2">Moral</option>
+                        </select><br><br> <label>Nombres:</label>
+                        <input type="text" placeholder="Nombre" class="form-control"><br>
+                        <label for="">Apellidos</label> 
                     </div>
-                    <button type="submit" class="btn btn-primary form-control">Entrar</button>
-                    </form>
+                    <div class="form-group col-md-6">
+                        <input type="Apellido materno" class="form-control" id="" placeholder="Materno">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="Apellido paterno" class="form-control" id="" placeholder="Paterno">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="">Clave</label>
+                    <input type="text" class="form-control" placeholder="RFC/CURP">
+                </div>
+                <button type="submit" class="btn btn-primary form-control">Entrar</button>
+            </form>
         </div>
         <center>
             <div id="div3" class="container">

@@ -92,6 +92,8 @@ func (empleado *Empleado) Save() error {
 }
 
 func (empleado *Empleado) registrar() error {
+    empleado.habilitado=1
+    empleado.fechaCreacion=ObtenerFechaHoraActualString()
 	sql := "INSERT INTO empleados(nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?,?);"
 	empleadoID, err := InsertData(sql, empleado.Nombre, empleado.ApellidoPaterno, empleado.ApellidoMaterno, 
         empleado.Username, empleado.Password, empleado.habilitado, empleado.fechaCreacion)

@@ -13,9 +13,9 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">
+                <p class="navbar-brand">
                     Banco de Hermosillo
-                </a>
+                </p>
             </div>
             <div class="collapse navbar-collapse navbar-right">
                 <ul>
@@ -25,19 +25,26 @@
                 </ul>
             </div>
         </div>
-        
+
     </nav>
     <center><h1>Servicio monitoreo de cuenta</h1></center>
     <br><br>
     <div class="container">
       <div class="col-md-3 ">
-          <select name="" id="" class="form-control"></select>
-      </div>
-      <div class="col-md-2">
-          <button class="btn btn-primary">Consultar</button>
+        <form action="/cliente/" method="POST">
+          <select name="tarjeta" id="tarjeta" class="form-control">
+            <option value="0" selected disabled>Seleccione una opcion</option>
+            {{range .Tarjetas}}
+            <option value="{{.NumeroTarjeta}}">{{.NumeroTarjeta}}</option>
+            {{end}}
+          </select>
+          <div class="col-md-2">
+            <input type="submit" class="btn btn-primary" value="Consultar"/>
+          </div>
+        </form>
       </div>
       <div class="col-md-3 col-md-offset-4">
-        <h4>Saldo disponible:</h4>
+        <h4>Saldo disponible: {{.Cuenta.Saldo}} </h4>
       </div>
       <div>
 
@@ -52,19 +59,23 @@
                 <th scope="col">Fecha y hora</th>
                 <th scope="col">Monto</th>
                 <th scope="col">estado</th>
+                <th scope="col">Tarjeta origen</th>
                 <th scope="col">Tarjeta destino</th>
                 <th scope="col">Tipo transaccion</th>
               </tr>
             </thead>
             <tbody>
+              {{range .Transacciones}}
               <tr>
-                <th scope="row"></th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <th scope="row">{{.ID}}</th>
+                <td>{{.Fecha}}</td>
+                <td>{{.Monto}}</td>
+                <td>{{.Estado}}</td>
+                <td>{{.NumeroTarjetaOrigen}}</td>
+                <td>{{.NumeroTarjetaDestino}}</td>
+                <td>{{.IDTipoTransaccion}}</td>
               </tr>
+              {{end}}
               </tbody>
         </table>
     </div>

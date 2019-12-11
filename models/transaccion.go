@@ -68,6 +68,19 @@ func GetTransacciones() (Transacciones, error) {
     return transacciones, err
 }
 
+func GetTransaccionesByTerjeta(numeroTarjeta string) (Transacciones, error) {
+    var transacciones Transacciones
+    query := "SELECT id, fecha, monto, estado, numero_tarjeta_origen, numero_tarjeta_destino, id_tipo_transaccion FROM transacciones WHERE numero_tarjeta_origen=? OR numero_tarjeta_destino=?"
+    rows, err := Query(query, numeroTarjeta, numeroTarjeta)
+    for rows.Next() {
+        transaccion := Transaccion{}
+        rows.Scan(&transaccion.ID, &transaccion.Fecha, &transaccion.Monto, &transaccion.Estado, 
+            &transaccion.NumeroTarjetaOrigen, &transaccion.NumeroTarjetaDestino, &transaccion.IDTipoTransaccion)
+        transacciones = append(transacciones, transaccion)
+    }
+    return transacciones, err
+}
+
 func (transaccion *Transaccion) Guardar() error {
     if transaccion.ID == 0 {
         return transaccion.registrar()
