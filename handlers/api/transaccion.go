@@ -95,7 +95,9 @@ func DoDeposito(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	transaccion,_ := models.CrearTransaccion(deposito.Monto, 1, "", deposito.TarjetaDestino, 1)
-	models.SendData(w, transaccion)
+	tResponse:= formatResponse(transaccion)
+	tResponse.NumeroTarjetaOrigen=""
+	models.SendData(w, tResponse)
 }
 
 func enableCors(w *http.ResponseWriter) {
@@ -111,7 +113,7 @@ func formatResponse(transaccion *models.Transaccion) *TransaccionResponse {
 	fmt.Println(transaccion.NumeroTarjetaDestino)
 	tResponse.NumeroTarjetaOrigen = utils.HideCard(transaccion.NumeroTarjetaOrigen)
 	tResponse.NumeroTarjetaDestino = utils.HideCard(transaccion.NumeroTarjetaDestino)
-
+	fmt.Println("POPOOOOOOOOOOOOOOO")
 	if transaccion.Estado == 1{
 		tResponse.Estado="Transaccion exitosa"
 	} else {
