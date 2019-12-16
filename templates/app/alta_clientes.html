@@ -48,8 +48,8 @@
                         <h3>Datos del solicitante</h3>
                         <label>Tipo de persona:</label>
                         <select name="tipo_cuenta" id="tipo_cuenta" class="form-control">
-                            <option value="0">Fisica</option>
-                            <option value="1">Moral</option>
+                            <option value="1">Fisica</option>
+                            <option value="2">Moral</option>
                         </select><br><br> <label>Nombres:</label>
                         <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control"><br>
                             <label id="titulo">Apellidos</label> 
@@ -144,11 +144,11 @@
                 $("#tipo_cuenta").on('change', function(){
                     var valor= $(this).val();
                     switch(valor){
-                        case "0":
+                        case "1":
                             $("#Fisica").show();
                             $("#titulo").show();
                         break;
-                        case "1":
+                        case "2":
                             $("#Fisica").hide();
                             $("#titulo").hide();
                         break;
