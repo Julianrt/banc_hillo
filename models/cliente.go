@@ -76,6 +76,11 @@ func GetClienteByClave(clave string) (*Cliente, error) {
     return getCliente(query, clave)
 }
 
+func GetClienteByNumeroTarjeta(tarjeta string) (*Cliente, error) {
+    query := "SELECT id, nombre, apellido_paterno, apellido_materno, clave, habilitado, fecha_creacion FROM clientes WHERE habilitado=1 AND id in (SELECT id_cliente FROM tarjetas WHERE numero_tarjeta=?)"
+    return getCliente(query, tarjeta)
+}
+
 func (cliente *Cliente) Guardar() error {
     if cliente.ID == 0 {
         return cliente.registrar()

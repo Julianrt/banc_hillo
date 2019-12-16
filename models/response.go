@@ -20,6 +20,24 @@ func CreateDefaultResponse(w http.ResponseWriter) Response {
 	return Response{Status: http.StatusOK, writer: w, contentType: "application/json"}
 }
 
+func SendPaymentRequired(w http.ResponseWriter) {
+	response := CreateDefaultResponse(w)
+	response.PaymentRequired()
+	response.Send()
+}
+
+func (r *Response) PaymentRequired() {
+	r.Status = http.StatusPaymentRequired
+	r.Message = "payment couldn't be processed"
+}
+
+//SendNotFound method
+func SendNotFound(w http.ResponseWriter) {
+	response := CreateDefaultResponse(w)
+	response.NotFound()
+	response.Send()
+}
+
 //NotFound method
 func (r *Response) NotFound() {
 	r.Status = http.StatusNotFound
@@ -52,13 +70,6 @@ func (r *Response) Send() {
 func SendData(w http.ResponseWriter, data interface{}) {
 	response := CreateDefaultResponse(w)
 	response.Data = data
-	response.Send()
-}
-
-//SendNotFound method
-func SendNotFound(w http.ResponseWriter) {
-	response := CreateDefaultResponse(w)
-	response.NotFound()
 	response.Send()
 }
 

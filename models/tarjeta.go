@@ -96,8 +96,11 @@ func GetTarjetasByIDCuenta(idCuenta int) (Tarjetas, error) {
 
 func ValidTarjeta(numeroTarjeta, fechaVencimiento, cvv string) bool {
     tarjeta, _ := GetTarjetaByNumeroTarjeta(numeroTarjeta)
-    if tarjeta.FechaVencimiento == fechaVencimiento && tarjeta.NumeroSeguridad == cvv {
-        return true
+
+    if tarjeta.ID != 0 {
+        if tarjeta.FechaVencimiento == fechaVencimiento && tarjeta.NumeroSeguridad == cvv {
+            return true
+        }
     }
     return false
 }

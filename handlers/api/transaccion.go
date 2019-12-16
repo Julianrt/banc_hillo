@@ -22,6 +22,17 @@ type Desposito struct {
 	Monto 			float32 	`json:"monto"`
 }
 
+type TransaccionResponse struct {
+    ID                      int     `json:"no_transaccion"`
+    Fecha                   string  `json:"fecha"`
+    Monto                   float32 `json:"monto"`
+    Estado                  string  `json:"estado"`
+    TitularTarjeta 			string 	`json:"titular_tarjeta"`
+    NumeroTarjetaOrigen     string  `json:"numero_tarjeta_origen"`
+    NumeroTarjetaDestino    string  `json:"numero_tarjeta_destino"`
+    TipoTransaccion       	string  `json:"tipo_transaccion"`
+}
+
 func GetTransacciones(w http.ResponseWriter, r *http.Request) {
 	transacciones,_ := models.GetTransacciones()
 	models.SendData(w, transacciones)
@@ -48,12 +59,16 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
     	if tarjetaOrigen.ID != 0 && tarjetaDestino.ID != 0 {
         	err = cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, transferencia.Monto)
         	if err != nil {
-            	models.SendNotFound(w)
+            	models.SendPaymentRequired(w)
             	return
         	}
         	transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
-        	models.SendData(w, transaccion)
+        	tResponse := formatResponse(transaccion)
+        	models.SendData(w, tResponse)
         	return
+    	} else {
+    		models.SendNotFound(w)
+    		return
     	}
     }
 
@@ -83,4 +98,33 @@ func DoDeposito(w http.ResponseWriter, r *http.Request) {
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func formatResponse(transaccion *models.Transaccion) *TransaccionResponse {
+	tResponse := &TransaccionResponse{}
+	tResponse.ID = transaccion.ID
+	tResponse.Fecha = transaccion.Fecha
+	tResponse.Monto = transaccion.Monto
+	tResponse.NumeroTarjetaOrigen = transaccion.NumeroTarjetaOrigen
+	tResponse.NumeroTarjetaDestino = transaccion.NumeroTarjetaDestino
+
+	if transaccion.Estado == 1{
+		tResponse.Estado="Transaccion exitosa"
+	} else {
+		tResponse.Estado="Transaccion fallida"
+	}
+
+	if transaccion.IDTipoTransaccion == 1 {
+		tResponse.TipoTransaccion = "DEPOSITO"
+	} else if transaccion.IDTipoTransaccion == 2 {
+		tResponse.TipoTransaccion = "TRANSFERENCIA"
+	}
+
+	titular,_:= models.GetClienteByNumeroTarjeta(transaccion.NumeroTarjetaOrigen)
+	tResponse.TitularTarjeta = titular.Nombre
+	if titular.ApellidoPaterno != "" {
+		tResponse.TitularTarjeta+= " "+titular.ApellidoPaterno
+	}
+
+	return tResponse
 }

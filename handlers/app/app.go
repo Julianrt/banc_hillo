@@ -145,7 +145,7 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		utils.RenderTemplate(w, "app/admin", nil)
 	} else if r.Method == "POST" {
-
+		
 	}
 }
 
