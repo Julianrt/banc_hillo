@@ -47,7 +47,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 				log.Println("No se encontro la tarjeta")
 			}
 		} else {
-			log.Println("no es una tarjeta")
 			empleado,_ := models.GetEmpleadoByUsername(username)
 			if empleado.ID != 0{
 				if empleado.Password == password {
@@ -126,8 +125,22 @@ func Cajero(w http.ResponseWriter, r *http.Request) {
 					if cuentaDestino.ID != 0 {
 						err := cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, monto)
 						if err != nil {
-							log.Println(":CCCCCCCCCCCCCC")
-							log.Println(err.Error())
+							utils.RenderTemplate(w, "app/transferencia_failed", struct {
+								TarjetaOrigen 		string
+								CVV 				string
+								FechaVencimiento 	string
+								TarjetaDestino 		string
+								Monto 				string
+								Mensaje 			string
+							}{
+								utils.HideCard(numeroTarjetaOrigen),
+								cvv,
+								fechaVencimiento,
+								utils.HideCard(numeroTarjetaDestino),
+								montoString,
+								err.Error(),
+							})
+							return
 						}
 						transaccion,err := models.CrearTransaccion(monto,1,numeroTarjetaOrigen,numeroTarjetaDestino,2)
 						if err == nil {
@@ -137,22 +150,78 @@ func Cajero(w http.ResponseWriter, r *http.Request) {
 							log.Println(err.Error())
 						}
 					}else {
-						log.Println("Ese tarjeta destino NO tiene cuenta")
-					}
+						utils.RenderTemplate(w, "app/transferencia_failed", struct {
+							TarjetaOrigen 		string
+							CVV 				string
+							FechaVencimiento 	string
+							TarjetaDestino 		string
+							Monto 				string
+							Mensaje 			string
+						}{
+							utils.HideCard(numeroTarjetaOrigen),
+							cvv,
+							fechaVencimiento,
+							utils.HideCard(numeroTarjetaDestino),
+							montoString,
+							"No se encontro la tarjeta destino",
+						})
+						return
+				}
 				} else {
-					log.Println("Los datos de la tarjeta de origen no coinciden")
+					utils.RenderTemplate(w, "app/transferencia_failed", struct {
+						TarjetaOrigen 		string
+						CVV 				string
+						FechaVencimiento 	string
+						TarjetaDestino 		string
+						Monto 				string
+						Mensaje 			string
+					}{
+						utils.HideCard(numeroTarjetaOrigen),
+						cvv,
+						fechaVencimiento,
+						utils.HideCard(numeroTarjetaDestino),
+						montoString,
+						"No coinciden los datos de la tarjeta origen",
+					})
+					return
 				}
 			} else {
-				log.Println("No existe esa tarjeta de origen")
+				utils.RenderTemplate(w, "app/transferencia_failed", struct {
+					TarjetaOrigen 		string
+					CVV 				string
+					FechaVencimiento 	string
+					TarjetaDestino 		string
+					Monto 				string
+					Mensaje 			string
+				}{
+					utils.HideCard(numeroTarjetaOrigen),
+					cvv,
+					fechaVencimiento,
+					utils.HideCard(numeroTarjetaDestino),
+					montoString,
+					"No se encontro la tarjeta origen",
+				})
+				return
 			}
 		} else {
 			//Deposito
-			log.Println("Deposito")
 			if cuentaDestino.ID != 0 {
 				cuentaDestino.Depositar(monto)
-				models.CrearTransaccion(monto,1,"",numeroTarjetaDestino,1)
+				transaccion,_ := models.CrearTransaccion(monto,1,"",numeroTarjetaDestino,1)
+				tResponse := api.FormatResponse(transaccion)
+				utils.RenderTemplate(w, "app/notificacion_transferencia", tResponse)
+				return
 			} else {
-				log.Println("Esta tarjeta no tiene cuenta")
+				utils.RenderTemplate(w, "app/deposito_failed", struct {
+					TarjetaDestino 		string
+					Monto 				string
+					Mensaje 			string
+				}{
+					utils.HideCard(numeroTarjetaDestino),
+					montoString,
+					"No se encontro la tarjeta destino",
+				})
+				return
 			}
 		}
 
