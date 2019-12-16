@@ -244,18 +244,48 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 		apMaterno := r.FormValue("ap_materno")
 		clave := r.FormValue("clave")
 
-		cliente,_ := models.CrearCliente(nombre, apPaterno, apMaterno, clave)
-		cuenta,_ := models.AltaCuenta("", cliente.ID, tipoCuenta)
-		tarjeta,_ := models.CrearTarjeta(cuenta.ID, cliente.ID,"","","","")
+		numeroTarjeta := r.FormValue("tarjeta")
+		cvv := r.FormValue("cvv")
+		mes := r.FormValue("mes")
+		ano := r.FormValue("ano")
+		fecha := ""
+		if mes != "" && ano != "" {
+			fecha += mes+"/"+ano
+		}
 
+		cliente, err := models.CrearCliente(nombre, apPaterno, apMaterno, clave)
+		if err == nil {
+			cuenta,_ := models.AltaCuenta("", cliente.ID, tipoCuenta)
+			tarjeta,err := models.CrearTarjeta(cuenta.ID, cliente.ID, numeroTarjeta, "", fecha, cvv)
+			if err == nil {
+				utils.RenderTemplate(w, "app/notificacion_cliente", struct {
+					Titular 			string
+					NumeroTarjeta 		string
+					Nip 				string
+					FechaVencimiento 	string
+					CVV 				string
+				}{
+					cliente.Nombre+" "+cliente.ApellidoPaterno,
+					tarjeta.NumeroTarjeta,
+					tarjeta.Nip,
+					tarjeta.FechaVencimiento,
+					tarjeta.NumeroSeguridad,
+				})
+			} else {
+				utils.RenderTemplate(w, "app/notificacion_cliente_failed", struct {
+					Mensaje 	string
+				}{
+					"Ese numero de tarjeta ya esta registrado",
+				})
+			}
+		} else {
+			utils.RenderTemplate(w, "app/notificacion_cliente_failed", struct {
+				Mensaje 	string
+			}{
+				"Esa clave de persona fisica o moral ya está registrada",
+			})
 
-
-		log.Println(cliente)
-		log.Println(cuenta)
-		log.Println(tarjeta)
-
-
-		http.Redirect(w, r, "/admin/", 302)
+		}
 	}
 }
 

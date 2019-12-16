@@ -33,7 +33,6 @@
       <div class="col-md-3 ">
         <form action="/cliente/" method="POST">
           <select name="tarjeta" id="tarjeta" class="form-control">
-            <option value="0" selected disabled>Seleccione una opcion</option>
             {{range .Tarjetas}}
             <option value="{{.NumeroTarjeta}}">{{.NumeroTarjeta}}</option>
             {{end}}
@@ -44,7 +43,7 @@
         </form>
       </div>
       <div class="col-md-3 col-md-offset-4">
-        <h4>Saldo disponible: {{.Cuenta.Saldo}} </h4>
+        <h3>Saldo disponible: <strong>${{.Cuenta.Saldo}}</strong></h3>
       </div>
       <div>
 

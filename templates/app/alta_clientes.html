@@ -50,25 +50,25 @@
                             <option value="1">Fisica</option>
                             <option value="2">Moral</option>
                         </select><br>
-                        <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control"><br>
+                        <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control" required><br>
                         <div id="Fisica">
                             <div class="form-group col-md-6">
                                 <input type="Apellido paterno" name="ap_paterno" id="ap_paterno" class="form-control" 
-                                placeholder="Apellido paterno">
+                                placeholder="Apellido paterno" required>
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Apellido materno">
+                                <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Apellido materno" required>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="clave" id="clave" class="form-control" placeholder="RFC/CURP">
+                    <input type="text" name="clave" id="clave" class="form-control" placeholder="RFC/CURP" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <h3>Asignacion de tarjeta</h3>
-                        <input type="text" placeholder="Numero de tarjeta" class="form-control" id="tarjetaOrigen" name="tarjetaOrigen" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" >
+                        <input type="text" placeholder="Numero de tarjeta" class="form-control" id="tarjeta" name="tarjeta" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" minlength="16" maxlength="16">
                     </div>
                     <div class="form-group col-md-6">
                         <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" maxlength="3" >

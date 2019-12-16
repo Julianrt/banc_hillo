@@ -113,10 +113,20 @@ func (tarjeta *Tarjeta) Guardar() error {
 }
 
 func (tarjeta *Tarjeta) registrar () error {
-    tarjeta.NumeroTarjeta="5050"+RandomDigits(12)
+    if tarjeta.NumeroTarjeta == "" || len(tarjeta.NumeroTarjeta) != 16{
+        tarjeta.NumeroTarjeta="5050"+RandomDigits(12)
+    }
+
     tarjeta.Nip=RandomDigits(4)
-    tarjeta.FechaVencimiento=GetFechaVencimientoString()
-    tarjeta.NumeroSeguridad=RandomDigits(3)
+
+    if tarjeta.FechaVencimiento == "" {
+        tarjeta.FechaVencimiento=GetFechaVencimientoString()
+    }
+
+    if tarjeta.NumeroSeguridad == "" {
+        tarjeta.NumeroSeguridad=RandomDigits(3)
+    }
+    
     tarjeta.habilitado=1
     tarjeta.fechaCreacion=ObtenerFechaHoraActualString()
     query := "INSERT INTO tarjetas(id_cuenta, id_cliente, numero_tarjeta, nip, fecha_vencimiento, numero_seguridad, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?,?,?);"
