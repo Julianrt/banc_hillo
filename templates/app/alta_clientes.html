@@ -27,7 +27,7 @@
         </div>
         
     </nav>
-    <div class="container">
+    <!--<div class="container">
         <h3>Seleccionar una opcion:</h3>
         <div class="col-md-4">
             <Select class="form-control" id="inputSelect">
@@ -37,44 +37,56 @@
             </Select>
         </div>
 
-    </div>
+    </div>-->
     <div id="div1"></div>
     <center>
        <div class="col-md-offset-4 col-md-4" id="div2">
-            <h2>Alta de clientes</h2>
+            <h1>Alta de Cuentas</h1>
             <form method="POST" action="/admin/" class="">
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="form-group"><br>
                         <h3>Datos del solicitante</h3>
-                        <label>Tipo de persona:</label>
                         <select name="tipo_cuenta" id="tipo_cuenta" class="form-control">
                             <option value="1">Fisica</option>
                             <option value="2">Moral</option>
-                        </select><br><br> <label>Nombres:</label>
+                        </select><br>
                         <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control"><br>
-                            <label id="titulo">Apellidos</label> 
                         <div id="Fisica">
                             <div class="form-group col-md-6">
                                 <input type="Apellido paterno" name="ap_paterno" id="ap_paterno" class="form-control" 
-                                placeholder="Paterno">
+                                placeholder="Apellido paterno">
                             </div>
                             <div class="form-group col-md-6">
-                                <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Materno">
+                                <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Apellido materno">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="">Clave</label>
                     <input type="text" name="clave" id="clave" class="form-control" placeholder="RFC/CURP">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <h3>Asignacion de tarjeta</h3>
+                        <input type="text" placeholder="Numero de tarjeta" class="form-control" id="tarjetaOrigen" name="tarjetaOrigen" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" >
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="cvv" name="cvv" placeholder="CVV" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" maxlength="3" >
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" id="mes" name="mes" placeholder="MM" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" maxlength="2" >
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" id="ano" name="ano" class="form-control" placeholder="AA" onKeypress="if(event.keyCode < 45 ||event.keyCode > 57)event.returnValue=false;" maxlength="2" >
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary form-control">Entrar</button>
             </form>
         </div>
-        <center>
+        <!--<center>
             <div id="div3" class="container">
                 <h2>Consultar Movimientos y Saldo</h2>
-                <!--<form action="">
+                <form action="">
                     <label for="Numero de tarjeta:"></label>
                     <div class="col-md-4">
                     <input type="text" class="form-control">
@@ -85,7 +97,7 @@
                     <div class="col-md-2 col-md-offset-2">
                             <h4>Saldo disponible:</h4>
                     </div>
-                </form>-->
+                </form>
                 <div class="container">
                         <table class="table" >
                             <thead class="thead-dark">
@@ -111,36 +123,9 @@
                         </table>
                     </div>
             </div>
-        </center>
+        </center>-->
 
         <script>
-            $(function() {
-
-                $("#inputSelect").on('change', function() {
-
-                var selectValue = $(this).val();
-                switch (selectValue) {
-
-                    case "1":
-                    $("#div1").show();
-                    $("#div2").hide();
-                    $("#div3").hide();
-                    break;
-
-                    case "2":
-                    $("#div1").hide();
-                    $("#div2").show();
-                    $("#div3").hide();
-                    break;
-
-                    case "3":
-                    $("#div1").hide();
-                    $("#div2").hide();
-                    $("#div3").show();
-                    break;
-
-                }
-
                 $("#tipo_cuenta").on('change', function(){
                     var valor= $(this).val();
                     switch(valor){
@@ -153,11 +138,7 @@
                             $("#titulo").hide();
                         break;
                     }
-                });
-
                 }).change();
-
-            });
         </script>
 </body>
 </html>
