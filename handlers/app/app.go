@@ -155,17 +155,22 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		utils.RenderTemplate(w, "app/admin", nil)
 	} else if r.Method == "POST" {
-		tipoCuenta := r.FormValue("tipo_cuenta")
+		tipoCuentaString := r.FormValue("tipo_cuenta")
+		tipoCuenta,_ := strconv.Atoi(tipoCuentaString)
 		nombre := r.FormValue("nombre")
 		apPaterno := r.FormValue("ap_paterno")
 		apMaterno := r.FormValue("ap_materno")
 		clave := r.FormValue("clave")
 
-		log.Println(tipoCuenta)
-		log.Println(nombre)
-		log.Println(apPaterno)
-		log.Println(apMaterno)
-		log.Println(clave)
+		cliente,_ := models.CrearCliente(nombre, apPaterno, apMaterno, clave)
+		cuenta,_ := models.AltaCuenta("", cliente.ID, tipoCuenta)
+		tarjeta,_ := models.CrearTarjeta(cuenta.ID, cliente.ID,"","","","")
+
+
+
+		log.Println(cliente)
+		log.Println(cuenta)
+		log.Println(tarjeta)
 
 
 		http.Redirect(w, r, "/admin/", 302)

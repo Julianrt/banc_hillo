@@ -139,3 +139,11 @@ func (tarjeta *Tarjeta) Eliminar() error {
     _, err := Exec(query, tarjeta.ID)
     return err
 }
+
+func (tarjeta *Tarjeta) GetFechaCreacion() string {
+    return tarjeta.fechaCreacion
+}
+
+func (tarjeta *Tarjeta) SetFechaCreacion(fecha string) {
+    tarjeta.fechaCreacion = fecha
+}
