@@ -59,6 +59,7 @@
                 <th scope="col">Fecha y hora</th>
                 <th scope="col">Monto</th>
                 <th scope="col">estado</th>
+                <th scope="col">Titular de la tarjeta</th>
                 <th scope="col">Tarjeta origen</th>
                 <th scope="col">Tarjeta destino</th>
                 <th scope="col">Tipo transaccion</th>
@@ -67,13 +68,14 @@
             <tbody>
               {{range .Transacciones}}
               <tr>
-                <th scope="row">{{.ID}}</th>
+                <th scope="row"><center>{{.ID}}</center></th>
                 <td>{{.Fecha}}</td>
-                <td>{{.Monto}}</td>
+                <td><center>${{.Monto}}</center></td>
                 <td>{{.Estado}}</td>
+                <td><center>{{.TitularTarjeta}}</center></td>
                 <td>{{.NumeroTarjetaOrigen}}</td>
                 <td>{{.NumeroTarjetaDestino}}</td>
-                <td>{{.IDTipoTransaccion}}</td>
+                <td><center>{{.TipoTransaccion}}</center></td>
               </tr>
               {{end}}
               </tbody>

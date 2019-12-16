@@ -3,12 +3,9 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	//"strconv"
-	"fmt"
 	"../../utils"
 
 	"../../models"
-	//"github.com/gorilla/mux"
 )
 
 type Transferencia struct {
@@ -65,7 +62,7 @@ func DoTransferencia(w http.ResponseWriter, r *http.Request) {
             	return
         	}
         	transaccion,_ := models.CrearTransaccion(transferencia.Monto, 1, transferencia.TarjetaOrigen, transferencia.TarjetaDestino, 2)
-        	tResponse := formatResponse(transaccion)
+        	tResponse := FormatResponse(transaccion)
         	models.SendData(w, tResponse)
         	return
     	} else {
@@ -95,7 +92,7 @@ func DoDeposito(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	transaccion,_ := models.CrearTransaccion(deposito.Monto, 1, "", deposito.TarjetaDestino, 1)
-	tResponse:= formatResponse(transaccion)
+	tResponse:= FormatResponse(transaccion)
 	tResponse.NumeroTarjetaOrigen=""
 	models.SendData(w, tResponse)
 }
@@ -104,20 +101,19 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func formatResponse(transaccion *models.Transaccion) *TransaccionResponse {
-	tResponse := &TransaccionResponse{}
+func FormatResponse(transaccion *models.Transaccion) TransaccionResponse {
+	tResponse := TransaccionResponse{}
 	tResponse.ID = transaccion.ID
 	tResponse.Fecha = transaccion.Fecha
 	tResponse.Monto = transaccion.Monto
-	fmt.Println(transaccion.NumeroTarjetaOrigen)
-	fmt.Println(transaccion.NumeroTarjetaDestino)
-	tResponse.NumeroTarjetaOrigen = utils.HideCard(transaccion.NumeroTarjetaOrigen)
+	if len(transaccion.NumeroTarjetaOrigen) == 16 {
+		tResponse.NumeroTarjetaOrigen = utils.HideCard(transaccion.NumeroTarjetaOrigen)
+	}
 	tResponse.NumeroTarjetaDestino = utils.HideCard(transaccion.NumeroTarjetaDestino)
-	fmt.Println("POPOOOOOOOOOOOOOOO")
 	if transaccion.Estado == 1{
-		tResponse.Estado="Transaccion exitosa"
+		tResponse.Estado="Movimiento exitoso"
 	} else {
-		tResponse.Estado="Transaccion fallida"
+		tResponse.Estado="Failed"
 	}
 
 	if transaccion.IDTipoTransaccion == 1 {

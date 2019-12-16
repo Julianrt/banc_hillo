@@ -6,10 +6,11 @@ import (
 	"log"
 	"strconv"
 	"../../models"
+	"../api"
 )
 
 type ServeToClient struct {
-	Transacciones 	models.Transacciones
+	Transacciones 	[]api.TransaccionResponse
 	Cuenta 			*models.Cuenta
 	Tarjetas 		models.Tarjetas
 }
@@ -73,11 +74,20 @@ func Cliente(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		token := r.URL.Query().Get("token")
 		if token != "" {
+
+			transaccionesResponse := []api.TransaccionResponse{}
+
 			cuenta, _ := models.GetCuentaByNumeroTarjeta(token)
 			transacciones,_ := models.GetTransaccionesByTerjeta(token)
+
+			for i:=0; i<len(transacciones); i++ {
+				tResponse := api.FormatResponse(&transacciones[i])
+				transaccionesResponse = append(transaccionesResponse, tResponse)
+			}
+
 			tarjetas,_ := models.GetTarjetasByIDCuenta(cuenta.ID)
 
-			response := ServeToClient{transacciones, cuenta, tarjetas}
+			response := ServeToClient{transaccionesResponse, cuenta, tarjetas}
 
 			utils.RenderTemplate(w, "app/cliente", response)
 		}
@@ -145,7 +155,20 @@ func Admin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		utils.RenderTemplate(w, "app/admin", nil)
 	} else if r.Method == "POST" {
-		
+		tipoCuenta := r.FormValue("tipo_cuenta")
+		nombre := r.FormValue("nombre")
+		apPaterno := r.FormValue("ap_paterno")
+		apMaterno := r.FormValue("ap_materno")
+		clave := r.FormValue("clave")
+
+		log.Println(tipoCuenta)
+		log.Println(nombre)
+		log.Println(apPaterno)
+		log.Println(apMaterno)
+		log.Println(clave)
+
+
+		http.Redirect(w, r, "/admin/", 302)
 	}
 }
 

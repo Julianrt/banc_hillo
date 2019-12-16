@@ -42,28 +42,29 @@
     <center>
        <div class="col-md-offset-4 col-md-4" id="div2">
             <h2>Alta de clientes</h2>
-            <form method="GET" action="/admin/" class="">
+            <form method="POST" action="/admin/" class="">
                 <div class="form-row">
                     <div class="form-group">
                         <h3>Datos del solicitante</h3>
                         <label>Tipo de persona:</label>
-                        <select name="tipo_persona" id="tipo_persona" class="form-control">
+                        <select name="tipo_cuenta" id="tipo_cuenta" class="form-control">
                             <option value="1">Fisica</option>
                             <option value="2">Moral</option>
                         </select><br><br> <label>Nombres:</label>
-                        <input type="text" placeholder="Nombre" class="form-control"><br>
+                        <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control"><br>
                         <label for="">Apellidos</label> 
                     </div>
                     <div class="form-group col-md-6">
-                        <input type="Apellido materno" class="form-control" id="" placeholder="Materno">
+                        <input type="Apellido paterno" name="ap_paterno" id="ap_paterno" class="form-control" 
+                        placeholder="Paterno">
                     </div>
                     <div class="form-group col-md-6">
-                        <input type="Apellido paterno" class="form-control" id="" placeholder="Paterno">
+                        <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Materno">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="">Clave</label>
-                    <input type="text" class="form-control" placeholder="RFC/CURP">
+                    <input type="text" name="clave" id="clave" class="form-control" placeholder="RFC/CURP">
                 </div>
                 <button type="submit" class="btn btn-primary form-control">Entrar</button>
             </form>

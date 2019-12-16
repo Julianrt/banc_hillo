@@ -1,7 +1,5 @@
 package models
 
-import "log"
-
 var clienteSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS clientes(
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
@@ -62,7 +60,6 @@ func getCliente(query string, condicion interface{}) (*Cliente, error) {
         rows.Scan(&cliente.ID, &cliente.Nombre, &cliente.ApellidoPaterno, &cliente.ApellidoMaterno, &cliente.Clave,
             &cliente.habilitado, &cliente.fechaCreacion)
     }
-    log.Println(cliente)
     return &cliente, err
 }
 
