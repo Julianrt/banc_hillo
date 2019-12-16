@@ -120,15 +120,24 @@ func Cajero(w http.ResponseWriter, r *http.Request) {
 		if numeroTarjetaOrigen != "" {
 			//Transferencia
 			tarjetaOrigen, _ := models.GetTarjetaByNumeroTarjeta(numeroTarjetaOrigen)
-			log.Println("Transferencia")
 			if tarjetaOrigen.ID != 0 {
 				if tarjetaOrigen.FechaVencimiento == fechaVencimiento && tarjetaOrigen.NumeroSeguridad == cvv {
 					cuentaOrigen,_ := models.GetCuentaByID(tarjetaOrigen.IDCuenta)
 					if cuentaDestino.ID != 0 {
-						cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, monto)
-						models.CrearTransaccion(monto,1,numeroTarjetaOrigen,numeroTarjetaDestino,2)
+						err := cuentaOrigen.Transferir(cuentaDestino.NumeroDeCuenta, monto)
+						if err != nil {
+							log.Println(":CCCCCCCCCCCCCC")
+							log.Println(err.Error())
+						}
+						transaccion,err := models.CrearTransaccion(monto,1,numeroTarjetaOrigen,numeroTarjetaDestino,2)
+						if err == nil {
+							tResponse := api.FormatResponse(transaccion)
+							utils.RenderTemplate(w, "app/notificacion_transferencia", tResponse)
+						} else {
+							log.Println(err.Error())
+						}
 					}else {
-						log.Println("Ese tarjeta NO tiene cuenta")
+						log.Println("Ese tarjeta destino NO tiene cuenta")
 					}
 				} else {
 					log.Println("Los datos de la tarjeta de origen no coinciden")
@@ -148,7 +157,7 @@ func Cajero(w http.ResponseWriter, r *http.Request) {
 		}
 
 
-		http.Redirect(w, r, "/cajero/", 302)
+		//http.Redirect(w, r, "/cajero/", 302)
 
 	}
 

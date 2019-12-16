@@ -1,3 +1,4 @@
+{{define "app/notificacion_transferencia"}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,14 +11,12 @@
 <body>
     <div class="overlay" id="overlay">
         <div class="popup" id="popup">
-            <form>
-                <center><h2>Estado:</h2></center><br>
-                <h5>Numero de transaccion:</h5>
-                <h5>Fecha:</h5>
-                <h5>Tarjeta destino:</h5>
-                <h5>Monto:</h5><br>
-                <center><input name="button" type="button" class="btn btn-success col-md-3" onclick="window.close();" value="Aceptar" /></center>
-            </form>
+                <center><h2>Estado: Movimiento exitoso</h2></center><br>
+                <h5>Numero de transaccion: {{.ID}}</h5>
+                <h5>Fecha: {{.Fecha}}</h5>
+                <h5>Tarjeta destino: {{.NumeroTarjetaDestino}}</h5>
+                <h5>Monto: ${{.Monto}}</h5><br>
+                <a href="/cajero/"><center><input name="button" type="button" class="btn btn-success col-md-3" onclick="window.close();" value="Aceptar" /></center></a>
         </div>
     </div>
 
@@ -50,3 +49,4 @@
     </style>
 </body>
 </html>
+{{end}}
