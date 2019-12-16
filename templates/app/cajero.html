@@ -56,52 +56,6 @@
                         <input type="submit" class="btn btn-primary form-control" value="Entrar" id="btn-abrir-popup"/>
                     </form>
         </div>
-
-        <div class="overlay" id="overlay">
-			<div class="popup" id="popup">
-                <form>
-				<h2>Estado:</h2>
-                <h4>Numero de transaccion:</h4>
-                <h4>Fecha:</h4>
-                <h4>Tarjeta destino:</h4>
-                <h4>Monto:</h4>
-					<button type="submit" name="btn-cerrar-popup" class="btn-primary btn" id="btn-cerrar-popup">Aceptar</button>
-				</form>
-			</div>
-        </div>
-
-        <script src="Script/Notificacion.js"></script>
-
-        <style> 
-        .overlay{
-            background: rgba(0,0,0,.3);
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            visibility: hidden;
-        }
-        .overlay.active{
-            visibility: visible;
-        }
-        .popup{
-            background: #fafafa;
-            box-shadow: 0px 0px 5px 0px rgba(0,0,0,.3);
-            border-radius: 3px;
-            padding: 20px;
-            text-align: center;
-            width: 400px;
-            text-align: justify;
-        }
-        .popup form .btn-submit:hover{
-            background:  rgba(94, 125, blue227, .9);
-            
-        }
-        </style>
 </body>
 </html>
 {{end}}
