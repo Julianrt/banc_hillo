@@ -48,18 +48,20 @@
                         <h3>Datos del solicitante</h3>
                         <label>Tipo de persona:</label>
                         <select name="tipo_cuenta" id="tipo_cuenta" class="form-control">
-                            <option value="1">Fisica</option>
-                            <option value="2">Moral</option>
+                            <option value="0">Fisica</option>
+                            <option value="1">Moral</option>
                         </select><br><br> <label>Nombres:</label>
                         <input type="text" placeholder="Nombre" name="nombre" id="nombre" class="form-control"><br>
-                        <label for="">Apellidos</label> 
-                    </div>
-                    <div class="form-group col-md-6">
-                        <input type="Apellido paterno" name="ap_paterno" id="ap_paterno" class="form-control" 
-                        placeholder="Paterno">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Materno">
+                            <label id="titulo">Apellidos</label> 
+                        <div id="Fisica">
+                            <div class="form-group col-md-6">
+                                <input type="Apellido paterno" name="ap_paterno" id="ap_paterno" class="form-control" 
+                                placeholder="Paterno">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="Apellido materno" name="ap_materno" id="ap_materno" class="form-control" placeholder="Materno">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -138,6 +140,20 @@
                     break;
 
                 }
+
+                $("#tipo_cuenta").on('change', function(){
+                    var valor= $(this).val();
+                    switch(valor){
+                        case "0":
+                            $("#Fisica").show();
+                            $("#titulo").show();
+                        break;
+                        case "1":
+                            $("#Fisica").hide();
+                            $("#titulo").hide();
+                        break;
+                    }
+                });
 
                 }).change();
 
