@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	//"strconv"
+	"fmt"
+	"../../utils"
 
 	"../../models"
 	//"github.com/gorilla/mux"
@@ -105,8 +107,10 @@ func formatResponse(transaccion *models.Transaccion) *TransaccionResponse {
 	tResponse.ID = transaccion.ID
 	tResponse.Fecha = transaccion.Fecha
 	tResponse.Monto = transaccion.Monto
-	tResponse.NumeroTarjetaOrigen = transaccion.NumeroTarjetaOrigen
-	tResponse.NumeroTarjetaDestino = transaccion.NumeroTarjetaDestino
+	fmt.Println(transaccion.NumeroTarjetaOrigen)
+	fmt.Println(transaccion.NumeroTarjetaDestino)
+	tResponse.NumeroTarjetaOrigen = utils.HideCard(transaccion.NumeroTarjetaOrigen)
+	tResponse.NumeroTarjetaDestino = utils.HideCard(transaccion.NumeroTarjetaDestino)
 
 	if transaccion.Estado == 1{
 		tResponse.Estado="Transaccion exitosa"
