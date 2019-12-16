@@ -51,7 +51,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			empleado,_ := models.GetEmpleadoByUsername(username)
 			if empleado.ID != 0{
 				if empleado.Password == password {
-					http.Redirect(w, r, "/cajero/", 302)
+					if empleado.IDTipoEmpleado == 1 {
+						http.Redirect(w, r, "/cajero/", 302)
+					} else if empleado.IDTipoEmpleado == 2 {
+						http.Redirect(w, r, "/admin/", 302)
+					}
 					return
 				} else {
 					log.Println("password no coincide")

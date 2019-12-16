@@ -2,6 +2,7 @@ package models
 
 type Empleado struct {
     ID                 int       `json:"id"`
+    IDTipoEmpleado     int       `json:"id_tipo_empleado"`
     Nombre             string    `json:"nombre"`
     ApellidoPaterno    string    `json:"apellido_paterno"`
     ApellidoMaterno    string    `json:"apellido_materno"` 
@@ -13,6 +14,7 @@ type Empleado struct {
 
 var empleadosSchemeSQLITE string = `CREATE TABLE IF NOT EXISTS empleados(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_tipo_empleado INTEGER NOT NULL,
 	nombre TEXT NOT NULL,
 	apellido_paterno TEXT NOT NULL,
 	apellido_materno TEXT NOT NULL,
@@ -47,30 +49,30 @@ func GetEmpleado(sql string, condicion interface{}) (*Empleado, error) {
     empleado := &Empleado{}
     rows, err := Query(sql, condicion)
     for rows.Next() {
-        rows.Scan(&empleado.ID, &empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
+        rows.Scan(&empleado.ID, &empleado.IDTipoEmpleado ,&empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
             &empleado.Username, &empleado.Password, &empleado.habilitado, &empleado.fechaCreacion)
     }
     return empleado, err
 }
 
 func GetEmpleadoByID(id int) (*Empleado, error) {
-    sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND id=?"
+    sql := "SELECT id, id_tipo_empleado, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND id=?"
     return GetEmpleado(sql, id)
 }
 
 func GetEmpleadoByUsername(username string) (*Empleado, error) {
-    sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND username=?"
+    sql := "SELECT id, id_tipo_empleado, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1 AND username=?"
     return GetEmpleado(sql, username)
 }
 
 func GetEmpleados() Empleados {
     var empleados Empleados
-    sql := "SELECT id, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1"
+    sql := "SELECT id, id_tipo_empleado, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion FROM empleados WHERE habilitado=1"
     rows, _ := Query(sql)
     for rows.Next() {
         var empleado Empleado
-        rows.Scan(&empleado.ID, &empleado.Nombre, &empleado.ApellidoPaterno, &empleado.ApellidoMaterno, 
-            &empleado.Username, &empleado.Password, &empleado.habilitado, &empleado.fechaCreacion)
+        rows.Scan(&empleado.ID, &empleado.IDTipoEmpleado, &empleado.Nombre, &empleado.ApellidoPaterno, 
+            &empleado.ApellidoMaterno, &empleado.Username, &empleado.Password, &empleado.habilitado, &empleado.fechaCreacion)
         empleados = append(empleados, empleado)
     }
     return empleados
@@ -94,17 +96,17 @@ func (empleado *Empleado) Save() error {
 func (empleado *Empleado) registrar() error {
     empleado.habilitado=1
     empleado.fechaCreacion=ObtenerFechaHoraActualString()
-	sql := "INSERT INTO empleados(nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?,?);"
-	empleadoID, err := InsertData(sql, empleado.Nombre, empleado.ApellidoPaterno, empleado.ApellidoMaterno, 
-        empleado.Username, empleado.Password, empleado.habilitado, empleado.fechaCreacion)
+	sql := "INSERT INTO empleados(id_tipo_empleado, nombre, apellido_paterno, apellido_materno, username, password, habilitado, fecha_creacion) VALUES(?,?,?,?,?,?,?,?);"
+	empleadoID, err := InsertData(sql, empleado.IDTipoEmpleado , empleado.Nombre, empleado.ApellidoPaterno, 
+        empleado.ApellidoMaterno, empleado.Username, empleado.Password, empleado.habilitado, empleado.fechaCreacion)
 	empleado.ID = int(empleadoID)
 	return err
 }
 
 func (empleado *Empleado) actualizar() error {
-	sql := "UPDATE empleados SET nombre=?, apellido_paterno=?, apellido_materno=?, username=?, password=?, habilitado=? WHERE id=?"
-	_, err := Exec(sql, empleado.Nombre, empleado.ApellidoPaterno, empleado.ApellidoMaterno, empleado.Username, empleado.Password, 
-        empleado.habilitado, empleado.ID)
+	sql := "UPDATE empleados SET id_tipo_empleado=?, nombre=?, apellido_paterno=?, apellido_materno=?, username=?, password=?, habilitado=? WHERE id=?"
+	_, err := Exec(sql, empleado.IDTipoEmpleado, empleado.Nombre, empleado.ApellidoPaterno, empleado.ApellidoMaterno, 
+        empleado.Username, empleado.Password, empleado.habilitado, empleado.ID)
 	return err
 }
 
