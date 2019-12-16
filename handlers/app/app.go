@@ -84,7 +84,16 @@ func Cliente(w http.ResponseWriter, r *http.Request) {
 			transacciones,_ := models.GetTransaccionesByTerjeta(token)
 
 			for i:=0; i<len(transacciones); i++ {
+
 				tResponse := api.FormatResponse(&transacciones[i])
+				if transacciones[i].NumeroTarjetaOrigen == token {
+					cliente,_ := models.GetClienteByNumeroTarjeta(transacciones[i].NumeroTarjetaDestino)
+					tResponse.TitularTarjeta = cliente.Nombre+" "+cliente.ApellidoPaterno
+				} else if transacciones[i].NumeroTarjetaDestino == token {
+					cliente,_ := models.GetClienteByNumeroTarjeta(transacciones[i].NumeroTarjetaOrigen)
+					tResponse.TitularTarjeta = cliente.Nombre+" "+cliente.ApellidoPaterno
+				}
+
 				transaccionesResponse = append(transaccionesResponse, tResponse)
 			}
 
